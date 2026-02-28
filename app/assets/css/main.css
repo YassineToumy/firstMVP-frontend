@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Custom theme using Tailwind v4 CSS-first config */
+@theme {
+  --font-sans: 'Inter', sans-serif;
+}
