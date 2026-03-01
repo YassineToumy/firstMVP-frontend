@@ -29,7 +29,7 @@
             :key="i"
             @click="currentImage = Number(i)"
             class="flex-shrink-0 w-20 h-14 rounded overflow-hidden border-2 transition"
-            :class="currentImage === i ? 'border-[#111111]' : 'border-transparent opacity-70 hover:opacity-100'"
+            :class="currentImage === Number(i) ? 'border-[#111111]' : 'border-transparent opacity-70 hover:opacity-100'"
           >
             <img :src="img" class="w-full h-full object-cover" />
           </button>
@@ -67,9 +67,9 @@
 
             <!-- Tags -->
             <div class="flex flex-wrap gap-2 mt-4">
-              <span v-if="listing.property_type" class="tag">{{ listing.property_type }}</span>
-              <span v-if="listing.is_furnished !== undefined" class="tag">{{ listing.is_furnished ? 'Furnished' : 'Unfurnished' }}</span>
-              <span v-if="listing.energy_classification" class="tag">Energy: {{ listing.energy_classification }}</span>
+              <span v-if="listing.property_type" class="bg-gray-100 text-gray-700 text-xs font-medium px-2.5 py-1 rounded">{{ listing.property_type }}</span>
+              <span v-if="listing.is_furnished !== undefined" class="bg-gray-100 text-gray-700 text-xs font-medium px-2.5 py-1 rounded">{{ listing.is_furnished ? 'Furnished' : 'Unfurnished' }}</span>
+              <span v-if="listing.energy_classification" class="bg-gray-100 text-gray-700 text-xs font-medium px-2.5 py-1 rounded">Energy: {{ listing.energy_classification }}</span>
             </div>
           </div>
 
@@ -80,10 +80,10 @@
           </div>
 
           <!-- Features -->
-          <div v-if="listing.features?.length || listing.amenities?.length" class="bg-white rounded-lg shadow-sm p-6">
+          <div v-if="featuresList.length" class="bg-white rounded-lg shadow-sm p-6">
             <h2 class="text-lg font-semibold text-[#111111] mb-3">Features</h2>
             <div class="flex flex-wrap gap-2">
-              <span v-for="f in (listing.features || listing.amenities)" :key="f" class="tag">{{ f }}</span>
+              <span v-for="f in featuresList" :key="f" class="bg-gray-100 text-gray-700 text-xs font-medium px-2.5 py-1 rounded">{{ f }}</span>
             </div>
           </div>
         </div>
@@ -126,9 +126,6 @@
 </template>
 
 <script setup lang="ts">
-import { useProxyImage } from '~/composables/useProxyImage'
-
-const { proxyImage } = useProxyImage()
 const route = useRoute()
 const { fetchListing } = useListings()
 
@@ -139,31 +136,66 @@ const currentImage = ref<number>(0)
 const { data: res, pending } = await useAsyncData(`listing-${source}-${id}`, () => fetchListing(source, id))
 const listing = computed(() => res.value?.data || null)
 
+/**
+ * Parse images/photos — handles PostgreSQL TEXT[] returned as string "{url1,url2}"
+ */
+function parseArrayField(val: any): string[] {
+  if (!val) return []
+  if (Array.isArray(val)) return val.filter(Boolean)
+  if (typeof val === 'string') {
+    // PostgreSQL array format: {url1,url2,url3}
+    if (val.startsWith('{') && val.endsWith('}')) {
+      return val.slice(1, -1).split(',').map(s => s.replace(/^"|"$/g, '')).filter(Boolean)
+    }
+    // Single URL
+    if (val.startsWith('http')) return [val]
+  }
+  return []
+}
+
 const images = computed(() => {
   if (!listing.value) return []
-  const raw = listing.value.images || listing.value.photos || (listing.value.thumbnail ? [listing.value.thumbnail] : [])
-  return raw.map((img: string) => proxyImage(img))
+  const fromImages = parseArrayField(listing.value.images)
+  const fromPhotos = parseArrayField(listing.value.photos)
+  const result = fromImages.length ? fromImages : fromPhotos
+  if (!result.length && listing.value.thumbnail) {
+    return [listing.value.thumbnail]
+  }
+  return result
 })
-const mainImage = computed(() => images.value[currentImage.value] || null)
+
+const mainImage = computed(() => images.value?.[currentImage.value] || null)
+
+/**
+ * Parse features/amenities — same PostgreSQL array issue
+ */
+const featuresList = computed(() => {
+  if (!listing.value) return []
+  return [
+    ...parseArrayField(listing.value.features),
+    ...parseArrayField(listing.value.amenities),
+  ]
+})
 
 const detailFields = computed(() => {
   if (!listing.value) return {}
   const l = listing.value
   const fields: Record<string, any> = {}
-  if (l.rooms || l.roomsQuantity) fields['Rooms'] = l.rooms || l.roomsQuantity
-  if (l.bedrooms || l.bedroomsQuantity) fields['Bedrooms'] = l.bedrooms || l.bedroomsQuantity
-  if (l.bathrooms || l.bathroomsQuantity) fields['Bathrooms'] = l.bathrooms || l.bathroomsQuantity
-  if (l.surface_m2 || l.surfaceArea) fields['Surface'] = `${l.surface_m2 || l.surfaceArea} m²`
+  if (l.rooms) fields['Rooms'] = l.rooms
+  if (l.bedrooms) fields['Bedrooms'] = l.bedrooms
+  if (l.bathrooms) fields['Bathrooms'] = l.bathrooms
+  if (l.surface_m2) fields['Surface'] = `${l.surface_m2} m²`
   if (l.floor) fields['Floor'] = l.floor
   if (l.heating) fields['Heating'] = l.heating
-  if (l.is_furnished !== undefined) fields['Furnished'] = l.is_furnished ? 'Yes' : 'No'
-  if (l.energy_classification || l.energyClassification) fields['Energy'] = l.energy_classification || l.energyClassification
-  if (l.parking_places || l.parkingPlacesQuantity) fields['Parking'] = l.parking_places || l.parkingPlacesQuantity
+  if (l.is_furnished !== undefined && l.is_furnished !== null) fields['Furnished'] = l.is_furnished ? 'Yes' : 'No'
+  if (l.energy_class) fields['Energy'] = l.energy_class
+  if (l.parking_spots) fields['Parking'] = l.parking_spots
   if (l.charges) fields['Charges'] = `${l.charges} ${l.currency || ''}`
   return fields
 })
 
 function formatPrice(price: number, currency: string): string {
+  if (!price) return 'Price on request'
   const locales: Record<string, string> = { EUR: 'fr-FR', TND: 'fr-TN', EGP: 'en-EG', CAD: 'en-CA' }
   try {
     return new Intl.NumberFormat(locales[currency] || 'en-US', {
@@ -176,10 +208,3 @@ function formatPrice(price: number, currency: string): string {
 
 useHead({ title: listing.value ? `${listing.value.title || listing.value.city} | RentGlobe` : 'Listing | RentGlobe' })
 </script>
-
-<style scoped>
-@reference "tailwindcss";
-.tag {
-  @apply bg-gray-100 text-gray-700 text-xs font-medium px-2.5 py-1 rounded;
-}
-</style>
