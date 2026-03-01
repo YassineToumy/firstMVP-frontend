@@ -27,7 +27,7 @@
           <button
             v-for="(img, i) in images.slice(0, 10)"
             :key="i"
-            @click="currentImage = i"
+            @click="currentImage = Number(i)"
             class="flex-shrink-0 w-20 h-14 rounded overflow-hidden border-2 transition"
             :class="currentImage === i ? 'border-[#111111]' : 'border-transparent opacity-70 hover:opacity-100'"
           >
@@ -126,19 +126,23 @@
 </template>
 
 <script setup lang="ts">
+import { useProxyImage } from '~/composables/useProxyImage'
+
+const { proxyImage } = useProxyImage()
 const route = useRoute()
 const { fetchListing } = useListings()
 
 const source = route.params.source as string
 const id = route.params.id as string
-const currentImage = ref(0)
+const currentImage = ref<number>(0)
 
 const { data: res, pending } = await useAsyncData(`listing-${source}-${id}`, () => fetchListing(source, id))
 const listing = computed(() => res.value?.data || null)
 
 const images = computed(() => {
   if (!listing.value) return []
-  return listing.value.images || listing.value.photos || (listing.value.thumbnail ? [listing.value.thumbnail] : [])
+  const raw = listing.value.images || listing.value.photos || (listing.value.thumbnail ? [listing.value.thumbnail] : [])
+  return raw.map((img: string) => proxyImage(img))
 })
 const mainImage = computed(() => images.value[currentImage.value] || null)
 
