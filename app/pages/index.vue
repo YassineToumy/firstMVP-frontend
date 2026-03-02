@@ -10,7 +10,7 @@
           class="w-full h-full object-cover"
         />
         <!-- Dark overlay with gradient -->
-        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a0a]/70 to-[#0a0a0a]/90" />
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/40 via-[#0a0a0a]/30 to-[#0a0a0a]/50" />
       </div>
 
       <!-- Animated accent blobs (on top of image) -->
