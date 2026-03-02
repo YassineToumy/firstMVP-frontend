@@ -1,30 +1,67 @@
 <template>
-  <div class="min-h-screen bg-[#F5F5F5]">
+  <div class="min-h-screen bg-[#FAFAFA]">
     <!-- Filters -->
     <ListingsListingFilters v-model:filters="filters" @filter="loadListings(1)" />
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <!-- Results count -->
-      <p class="text-sm text-gray-500 mb-4">
-        <template v-if="meta">
-          Showing {{ meta.total.toLocaleString() }} rentals in {{ region.current.name }}
-        </template>
-      </p>
+      <!-- Results header -->
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-xl font-bold text-[#0a0a0a]">
+            Rentals in {{ region.current.name }}
+          </h1>
+          <p v-if="meta" class="text-sm text-gray-500 mt-0.5">
+            {{ meta.total.toLocaleString() }} properties found
+          </p>
+        </div>
+        <!-- View toggle (future) -->
+        <div class="hidden sm:flex items-center gap-1 bg-white rounded-lg border border-gray-200 p-0.5">
+          <button class="p-1.5 rounded bg-[#0a0a0a] text-white">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
+          </button>
+          <button class="p-1.5 rounded text-gray-400 hover:text-gray-600">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
 
       <!-- Loading skeleton -->
       <div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <div v-for="n in 12" :key="n" class="bg-white rounded-lg h-80 animate-pulse" />
+        <div v-for="n in 12" :key="n" class="bg-white rounded-2xl overflow-hidden">
+          <div class="aspect-[4/3] bg-gray-100 animate-pulse" />
+          <div class="p-4 space-y-3">
+            <div class="h-5 bg-gray-100 rounded animate-pulse w-2/3" />
+            <div class="h-4 bg-gray-100 rounded animate-pulse w-1/2" />
+            <div class="h-4 bg-gray-100 rounded animate-pulse w-1/3" />
+          </div>
+        </div>
       </div>
 
       <!-- Results grid -->
       <div v-else-if="listings.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <ListingsListingCard v-for="l in listings" :key="l.source_id" :listing="l" />
+        <ListingsListingCard
+          v-for="(l, i) in listings"
+          :key="l.source_id"
+          :listing="l"
+          class="animate-fade-in-up"
+          :style="{ animationDelay: `${i * 30}ms` }"
+        />
       </div>
 
-      <!-- Empty -->
-      <div v-else class="text-center py-20">
-        <p class="text-gray-500">No listings match your filters.</p>
-        <button @click="resetAndLoad" class="mt-3 text-sm underline text-gray-600 hover:text-gray-800">
+      <!-- Empty state -->
+      <div v-else class="text-center py-24">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
+          <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <p class="text-gray-600 font-medium">No listings match your filters</p>
+        <p class="text-sm text-gray-400 mt-1">Try adjusting your search criteria</p>
+        <button @click="resetAndLoad" class="mt-4 text-sm font-medium text-violet-600 hover:text-violet-700 transition-colors">
           Clear all filters
         </button>
       </div>
@@ -82,11 +119,8 @@ function resetAndLoad() {
   loadListings(1)
 }
 
-// Reload when region changes
 watch(() => region.currentCode, () => loadListings(1))
-
-// Initial load on mount
 onMounted(() => loadListings())
 
-useHead({ title: `Listings — ${region.current.name} | RentGlobe` })
+useHead({ title: computed(() => `Listings — ${region.current.name} | RentGlobe`) })
 </script>

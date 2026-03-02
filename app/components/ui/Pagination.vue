@@ -1,20 +1,22 @@
 <template>
-  <nav v-if="lastPage > 1" class="flex items-center justify-center gap-1 mt-8">
+  <nav v-if="lastPage > 1" class="flex items-center justify-center gap-1 mt-10">
     <button
       @click="go(currentPage - 1)"
       :disabled="currentPage <= 1"
-      class="px-3 py-1.5 text-sm rounded border border-gray-200 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+      class="page-btn"
     >
-      Prev
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
     </button>
 
     <template v-for="p in pages" :key="p">
-      <span v-if="p === '...'" class="px-2 text-gray-400 text-sm">...</span>
+      <span v-if="p === '...'" class="px-2 text-gray-400 text-xs">...</span>
       <button
         v-else
         @click="go(p as number)"
-        class="px-3 py-1.5 text-sm rounded border transition"
-        :class="p === currentPage ? 'bg-[#111111] text-white border-[#111111]' : 'border-gray-200 hover:bg-gray-50'"
+        class="page-btn w-10"
+        :class="p === currentPage ? 'bg-[#0a0a0a] text-white border-[#0a0a0a] hover:bg-[#222]' : ''"
       >
         {{ p }}
       </button>
@@ -23,9 +25,11 @@
     <button
       @click="go(currentPage + 1)"
       :disabled="currentPage >= lastPage"
-      class="px-3 py-1.5 text-sm rounded border border-gray-200 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+      class="page-btn"
     >
-      Next
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
     </button>
   </nav>
 </template>
@@ -53,3 +57,12 @@ const pages = computed(() => {
   return items
 })
 </script>
+
+<style scoped>
+@reference "tailwindcss";
+.page-btn {
+  @apply h-10 px-3 text-sm rounded-lg border border-gray-200 bg-white text-gray-700
+    hover:bg-gray-50 hover:border-gray-300 disabled:opacity-30 disabled:cursor-not-allowed
+    flex items-center justify-center transition-all duration-150 active:scale-95;
+}
+</style>
