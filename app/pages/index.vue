@@ -1,8 +1,19 @@
 <template>
   <div>
     <!-- Hero -->
-    <section class="relative bg-[#0a0a0a] overflow-hidden">
-      <!-- Animated gradient blobs -->
+    <section class="relative overflow-hidden">
+      <!-- Background image -->
+      <div class="absolute inset-0">
+        <img
+          :src="heroImage"
+          alt=""
+          class="w-full h-full object-cover"
+        />
+        <!-- Dark overlay with gradient -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a0a]/70 to-[#0a0a0a]/90" />
+      </div>
+
+      <!-- Animated accent blobs (on top of image) -->
       <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div class="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-violet-600/20 to-transparent rounded-full blur-3xl animate-pulse-slow" />
         <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-emerald-600/15 to-transparent rounded-full blur-3xl animate-pulse-slow animation-delay-2000" />
@@ -210,6 +221,10 @@ const searchType = ref('')
 const listings = ref<Listing[]>([])
 const regionStats = ref<{ code: string; name: string; currency: string; count: number }[]>([])
 const loadingListings = ref(true)
+
+// Dark modern building facade at night — by Mike Hindle on Unsplash (free commercial use)
+// Replace with /images/hero-bg.jpg once downloaded to your public/ folder
+const heroImage = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80&auto=format&fit=crop'
 
 const totalListings = computed(() =>
   regionStats.value.reduce((s, r) => s + (r.count || 0), 0).toLocaleString()
