@@ -1,84 +1,92 @@
 <template>
   <div class="min-h-screen bg-[#F5F5F5]">
-    <!-- Loading -->
     <div v-if="loading" class="max-w-7xl mx-auto px-4 py-12">
       <div class="bg-white rounded-lg h-96 animate-pulse" />
     </div>
 
-    <!-- Content -->
-    <div v-else-if="listing" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div v-else-if="l" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
       <!-- Image gallery -->
       <div class="bg-white rounded-lg overflow-hidden shadow-sm">
         <div class="relative aspect-[16/9] sm:aspect-[21/9] bg-gray-100 overflow-hidden">
-          <img
-            v-if="mainImage"
-            :src="mainImage"
-            :alt="displayTitle"
-            class="w-full h-full object-cover"
-          />
-          <div v-else class="w-full h-full flex items-center justify-center text-gray-300">
-            <span class="text-sm">No image available</span>
-          </div>
+          <img v-if="mainImage" :src="mainImage" :alt="l.title || l.city" class="w-full h-full object-cover" />
+          <div v-else class="w-full h-full flex items-center justify-center text-gray-300 text-sm">No image</div>
         </div>
-
-        <!-- Thumbnails -->
-        <div v-if="images.length > 1" class="flex gap-1 p-2 overflow-x-auto">
-          <button
-            v-for="(img, i) in images.slice(0, 10)"
-            :key="i"
-            @click="currentImage = i"
+        <div v-if="imageList.length > 1" class="flex gap-1 p-2 overflow-x-auto">
+          <button v-for="(img, i) in imageList.slice(0, 12)" :key="i" @click="currentImage = Number(i)"
             class="flex-shrink-0 w-20 h-14 rounded overflow-hidden border-2 transition"
-            :class="currentImage === i ? 'border-[#111111]' : 'border-transparent opacity-70 hover:opacity-100'"
-          >
+            :class="currentImage === i ? 'border-[#111111]' : 'border-transparent opacity-70 hover:opacity-100'">
             <img :src="img" class="w-full h-full object-cover" />
           </button>
         </div>
       </div>
 
-      <!-- Two column layout -->
+      <!-- Two column -->
       <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        <!-- Left column -->
+        <!-- Left -->
         <div class="lg:col-span-2 space-y-6">
 
           <!-- Title & price -->
           <div class="bg-white rounded-lg shadow-sm p-6">
-            <h1 class="text-2xl font-bold text-[#111111]">{{ displayTitle }}</h1>
-            <p class="text-sm text-gray-500 mt-1">{{ displayLocation }}</p>
+            <h1 class="text-2xl font-bold text-[#111111]">
+              {{ l.title || `${l.property_type || 'Property'} in ${l.city || 'Unknown'}` }}
+            </h1>
+            <p class="text-sm text-gray-500 mt-1">
+              {{ [l.city, l.district, l.postal_code, l.province].filter(Boolean).join(', ') }}
+            </p>
 
             <p class="text-3xl font-bold text-[#111111] mt-4">
-              {{ formatPrice(displayPrice, displayCurrency) }}
-              <span class="text-base font-normal text-gray-500">/month</span>
+              {{ formatPrice(l.price, l.currency) }}
+              <span class="text-base font-normal text-gray-500">{{ l.price_period === 'yearly' ? '/year' : '/month' }}</span>
             </p>
 
             <!-- Key stats -->
             <div class="flex flex-wrap gap-6 mt-4 text-sm text-gray-600">
-              <span v-if="normalized.bedrooms">{{ normalized.bedrooms }} bedrooms</span>
-              <span v-if="normalized.bathrooms">{{ normalized.bathrooms }} bathrooms</span>
-              <span v-if="normalized.surface">{{ normalized.surface }} m²</span>
-              <span v-if="normalized.rooms">{{ normalized.rooms }} rooms</span>
+              <span v-if="l.bedrooms">{{ l.bedrooms }} bedrooms</span>
+              <span v-if="l.bathrooms">{{ l.bathrooms }} bathrooms</span>
+              <span v-if="l.rooms && l.rooms !== l.bedrooms">{{ l.rooms }} rooms</span>
+              <span v-if="l.surface_m2">{{ l.surface_m2 }} m²</span>
+              <span v-if="l.surface_sqft">{{ l.surface_sqft }} sqft</span>
+              <span v-if="l.floor">Floor {{ l.floor }}</span>
             </div>
 
             <!-- Tags -->
             <div class="flex flex-wrap gap-2 mt-4">
-              <span v-if="normalized.propertyType" class="tag">{{ normalized.propertyType }}</span>
-              <span v-if="normalized.furnished !== null" class="tag">{{ normalized.furnished ? 'Furnished' : 'Unfurnished' }}</span>
-              <span v-for="(tag, i) in normalized.extraTags" :key="i" class="tag">{{ tag }}</span>
+              <span v-if="l.property_type" class="tag">{{ l.property_type }}</span>
+              <span v-if="l.building_type" class="tag">{{ l.building_type }}</span>
+              <span v-if="l.is_furnished === true" class="tag">Furnished</span>
+              <span v-if="l.is_furnished === false" class="tag">Unfurnished</span>
+              <span v-if="l.is_new" class="tag">New</span>
+              <span v-if="l.energy_class" class="tag">Energy: {{ l.energy_class }}</span>
+              <span v-if="l.ghg_class" class="tag">GHG: {{ l.ghg_class }}</span>
+              <span v-if="l.property_condition" class="tag">{{ l.property_condition }}</span>
+              <span v-if="l.status" class="tag">{{ l.status }}</span>
             </div>
           </div>
 
           <!-- Description -->
-          <div v-if="normalized.description" class="bg-white rounded-lg shadow-sm p-6">
+          <div v-if="l.description" class="bg-white rounded-lg shadow-sm p-6">
             <h2 class="text-lg font-semibold text-[#111111] mb-3">Description</h2>
-            <p class="text-sm text-gray-600 leading-relaxed whitespace-pre-line">{{ normalized.description }}</p>
+            <p class="text-sm text-gray-600 leading-relaxed whitespace-pre-line">{{ l.description }}</p>
           </div>
 
-          <!-- Features -->
-          <div v-if="normalized.features.length" class="bg-white rounded-lg shadow-sm p-6">
+          <!-- Features / Amenities -->
+          <div v-if="featureList.length" class="bg-white rounded-lg shadow-sm p-6">
             <h2 class="text-lg font-semibold text-[#111111] mb-3">Features</h2>
             <div class="flex flex-wrap gap-2">
-              <span v-for="(f, i) in normalized.features" :key="i" class="tag">{{ f }}</span>
+              <span v-for="(f, i) in featureList" :key="i" class="tag">{{ f }}</span>
+            </div>
+          </div>
+
+          <!-- Rooms detail (Canada) -->
+          <div v-if="l.rooms_detail && Array.isArray(l.rooms_detail) && l.rooms_detail.length" class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-lg font-semibold text-[#111111] mb-3">Rooms</h2>
+            <div class="space-y-1 text-sm">
+              <div v-for="(r, i) in l.rooms_detail" :key="i" class="flex justify-between text-gray-600">
+                <span>{{ r.room || r.name }}</span>
+                <span class="text-gray-800">{{ r.dimensions || r.size || '' }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -86,23 +94,64 @@
         <!-- Right sidebar -->
         <div class="space-y-6">
 
-          <!-- Agent card -->
+          <!-- Contact -->
           <div class="bg-white rounded-lg shadow-sm p-6">
             <h3 class="text-sm font-semibold text-[#111111] mb-3">Contact</h3>
-            <p v-if="normalized.agent" class="text-sm text-gray-700">{{ normalized.agent }}</p>
-            <p v-else class="text-sm text-gray-400">No contact info</p>
+            <p v-if="l.agent_or_agency" class="text-sm text-gray-700">{{ l.agent_or_agency }}</p>
+            <p v-if="l.agent_name && l.agent_name !== l.agent_or_agency" class="text-xs text-gray-500 mt-1">Agent: {{ l.agent_name }}</p>
+            <p v-if="l.agency_name && l.agency_name !== l.agent_or_agency" class="text-xs text-gray-500 mt-1">Agency: {{ l.agency_name }}</p>
+            <p v-if="l.agent_phone" class="text-xs text-gray-500 mt-1">{{ l.agent_phone }}</p>
+            <a v-if="l.url" :href="l.url" target="_blank" class="mt-3 block text-xs text-gray-400 hover:text-gray-600 truncate">View original listing</a>
             <button class="mt-4 w-full py-2.5 bg-[#111111] text-white text-sm font-medium rounded-lg hover:bg-[#333333] transition">
               Contact
             </button>
           </div>
 
           <!-- Property details -->
-          <div v-if="Object.keys(detailFields).length" class="bg-white rounded-lg shadow-sm p-6">
+          <div v-if="Object.keys(details).length" class="bg-white rounded-lg shadow-sm p-6">
             <h3 class="text-sm font-semibold text-[#111111] mb-3">Property details</h3>
             <dl class="space-y-2 text-sm">
-              <div v-for="(val, key) in detailFields" :key="key" class="flex justify-between">
+              <div v-for="(val, key) in details" :key="key" class="flex justify-between">
                 <dt class="text-gray-500">{{ key }}</dt>
                 <dd class="text-gray-800 font-medium text-right max-w-[60%]">{{ val }}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Energy (France) -->
+          <div v-if="l.energy_class || l.ghg_class" class="bg-white rounded-lg shadow-sm p-6">
+            <h3 class="text-sm font-semibold text-[#111111] mb-3">Energy performance</h3>
+            <dl class="space-y-2 text-sm">
+              <div v-if="l.energy_class" class="flex justify-between">
+                <dt class="text-gray-500">Energy class</dt>
+                <dd class="font-bold text-lg">{{ l.energy_class }}</dd>
+              </div>
+              <div v-if="l.energy_value" class="flex justify-between">
+                <dt class="text-gray-500">Energy value</dt>
+                <dd>{{ l.energy_value }} kWh/m²/year</dd>
+              </div>
+              <div v-if="l.ghg_class" class="flex justify-between">
+                <dt class="text-gray-500">GHG class</dt>
+                <dd class="font-bold text-lg">{{ l.ghg_class }}</dd>
+              </div>
+              <div v-if="l.min_energy_cost && l.max_energy_cost" class="flex justify-between">
+                <dt class="text-gray-500">Energy cost</dt>
+                <dd>{{ l.min_energy_cost }} - {{ l.max_energy_cost }} EUR/year</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Price insights (Egypt) -->
+          <div v-if="l.avg_rent_area" class="bg-white rounded-lg shadow-sm p-6">
+            <h3 class="text-sm font-semibold text-[#111111] mb-3">Price insights</h3>
+            <dl class="space-y-2 text-sm">
+              <div v-if="l.avg_rent_area" class="flex justify-between">
+                <dt class="text-gray-500">Avg rent in area</dt>
+                <dd>{{ formatPrice(l.avg_rent_area, 'EGP') }}</dd>
+              </div>
+              <div v-if="l.vs_avg_pct" class="flex justify-between">
+                <dt class="text-gray-500">vs Average</dt>
+                <dd>{{ l.vs_avg_pct }}% {{ l.vs_avg_dir }}</dd>
               </div>
             </dl>
           </div>
@@ -110,7 +159,6 @@
       </div>
     </div>
 
-    <!-- Not found -->
     <div v-else class="max-w-7xl mx-auto px-4 py-20 text-center">
       <p class="text-gray-500">Listing not found.</p>
       <NuxtLink to="/listings" class="mt-3 inline-block text-sm underline text-gray-600">Back to listings</NuxtLink>
@@ -125,13 +173,13 @@ const { fetchListing } = useListings()
 const source = route.params.source as string
 const id = route.params.id as string
 const currentImage = ref(0)
-const listing = ref<Record<string, any> | null>(null)
+const l = ref<Record<string, any> | null>(null)
 const loading = ref(true)
 
 onMounted(async () => {
   try {
     const res = await fetchListing(source, id)
-    listing.value = res.data
+    l.value = res.data
   } catch (e) {
     console.error('Failed to load listing:', e)
   } finally {
@@ -139,193 +187,88 @@ onMounted(async () => {
   }
 })
 
-// ── Normalize fields across all sources ──
-const normalized = computed(() => {
-  const l = listing.value
-  if (!l) return { bedrooms: null, bathrooms: null, surface: null, rooms: null, propertyType: null, furnished: null, description: null, features: [], agent: null, extraTags: [] }
-
-  return match_source(source, l)
-})
-
-function match_source(src: string, l: Record<string, any>) {
-  switch (src) {
-    case 'bienici':
-      return {
-        bedrooms: l.bedrooms ?? l.bedrooms_quantity ?? l.bedroomsQuantity,
-        bathrooms: l.bathrooms ?? l.bathrooms_quantity ?? l.bathroomsQuantity,
-        surface: l.surface_m2 ?? l.surface_area ?? l.surfaceArea,
-        rooms: l.rooms ?? l.rooms_quantity ?? l.roomsQuantity,
-        propertyType: l.property_type ?? l.propertyType,
-        furnished: l.is_furnished ?? l.isFurnished ?? null,
-        description: l.description,
-        features: [],
-        agent: l.agency_name ?? l.agencyName,
-        extraTags: [
-          l.energy_classification || l.energyClassification ? `Energy: ${l.energy_classification || l.energyClassification}` : null,
-          l.heating ? `Heating: ${l.heating}` : null,
-          l.floor ? `Floor ${l.floor}` : null,
-        ].filter(Boolean),
-      }
-
-    case 'mubawab':
-      return {
-        bedrooms: l.bedrooms,
-        bathrooms: l.bathrooms,
-        surface: l.area_m2,
-        rooms: l.rooms,
-        propertyType: l.property_type,
-        furnished: null,
-        description: l.description,
-        features: Array.isArray(l.features) ? l.features : [],
-        agent: l.seller_name,
-        extraTags: [
-          l.property_condition ? `Condition: ${l.property_condition}` : null,
-          l.floor_number ? `Floor ${l.floor_number}` : null,
-          l.orientation ? `Orientation: ${l.orientation}` : null,
-        ].filter(Boolean),
-      }
-
-    case 'propertyfinder':
-      return {
-        bedrooms: l.bedrooms,
-        bathrooms: l.bathrooms,
-        surface: l.surface_sqm ?? (l.property_size?.sqm),
-        rooms: null,
-        propertyType: l.property_type,
-        furnished: l.is_furnished,
-        description: l.description,
-        features: Array.isArray(l.amenities) ? l.amenities : [],
-        agent: l.agent_name || l.agency_name,
-        extraTags: [
-          l.available_from ? `Available: ${l.available_from}` : null,
-          l.compound ? `Compound: ${l.compound}` : null,
-          l.price_period === 'yearly' ? 'Yearly rent' : null,
-        ].filter(Boolean),
-      }
-
-    case 'mktlist':
-      return {
-        bedrooms: l.beds,
-        bathrooms: l.baths,
-        surface: l.surface_m2_approx,
-        rooms: l.beds,
-        propertyType: l.property_type || l.building_type,
-        furnished: null,
-        description: l.description,
-        features: Array.isArray(l.features) ? l.features : [],
-        agent: l.realtor_name || l.brokerage_name,
-        extraTags: [
-          l.parking_type ? `Parking: ${l.parking_type}` : null,
-          l.heating_type ? `Heating: ${l.heating_type}` : null,
-          l.basement_type ? `Basement: ${l.basement_type}` : null,
-        ].filter(Boolean),
-      }
-
-    default:
-      return { bedrooms: null, bathrooms: null, surface: null, rooms: null, propertyType: null, furnished: null, description: null, features: [], agent: null, extraTags: [] }
+// Images — handle jsonb array from VIEW
+const imageList = computed(() => {
+  if (!l.value) return []
+  const imgs = l.value.images
+  if (Array.isArray(imgs)) return imgs
+  if (typeof imgs === 'string') {
+    try { return JSON.parse(imgs) } catch { return [] }
   }
-}
-
-// ── Display helpers ──
-const displayTitle = computed(() => {
-  const l = listing.value
-  if (!l) return ''
-  return l.title || `${normalized.value.propertyType || 'Property'} in ${l.city || 'Unknown'}`
+  return l.value.thumbnail ? [l.value.thumbnail] : []
 })
 
-const displayLocation = computed(() => {
-  const l = listing.value
-  if (!l) return ''
-  const parts = [
-    l.city,
-    l.district || l.district_name || l.location_text || l.community_name,
-    l.postal_code || l.postalCode,
-  ].filter(Boolean)
-  return parts.join(', ')
-})
+const mainImage = computed(() => imageList.value[currentImage.value] || null)
 
-const displayPrice = computed(() => {
-  const l = listing.value
-  if (!l) return 0
-  return l.price ?? l.price_value ?? 0
-})
-
-const displayCurrency = computed(() => {
-  const l = listing.value
-  if (!l) return 'EUR'
-  return l.currency || { bienici: 'EUR', mubawab: 'TND', propertyfinder: 'EGP', mktlist: 'CAD' }[source] || 'EUR'
-})
-
-// ── Images ──
-const images = computed(() => {
-  const l = listing.value
-  if (!l) return []
-  // Different sources store images differently
-  if (Array.isArray(l.images)) return l.images
-  if (Array.isArray(l.photos)) return l.photos
-  if (l.thumbnail) return [l.thumbnail]
-  return []
-})
-
-const mainImage = computed(() => images.value[currentImage.value] || null)
-
-// ── Detail fields (right sidebar) ──
-const detailFields = computed(() => {
-  const l = listing.value
-  if (!l) return {}
-  const f: Record<string, any> = {}
-
-  // Common
-  if (normalized.value.rooms) f['Rooms'] = normalized.value.rooms
-  if (normalized.value.bedrooms) f['Bedrooms'] = normalized.value.bedrooms
-  if (normalized.value.bathrooms) f['Bathrooms'] = normalized.value.bathrooms
-  if (normalized.value.surface) f['Surface'] = `${normalized.value.surface} m²`
-
-  // Source-specific extras
-  switch (source) {
-    case 'bienici':
-      if (l.floor) f['Floor'] = l.floor
-      if (l.heating) f['Heating'] = l.heating
-      if (l.charges) f['Charges'] = `${l.charges} EUR`
-      if (l.energy_classification) f['Energy class'] = l.energy_classification
-      if (l.ges_classification) f['GES class'] = l.ges_classification
-      if (l.has_elevator !== undefined) f['Elevator'] = l.has_elevator ? 'Yes' : 'No'
-      if (l.parking_places_quantity) f['Parking'] = l.parking_places_quantity
-      if (l.postal_code) f['Postal code'] = l.postal_code
-      break
-
-    case 'mubawab':
-      if (l.property_condition) f['Condition'] = l.property_condition
-      if (l.property_age) f['Age'] = l.property_age
-      if (l.floor_number) f['Floor'] = l.floor_number
-      if (l.orientation) f['Orientation'] = l.orientation
-      if (l.floor_type) f['Floor type'] = l.floor_type
-      break
-
-    case 'propertyfinder':
-      if (l.compound) f['Compound'] = l.compound
-      if (l.district) f['District'] = l.district
-      if (l.available_from) f['Available from'] = l.available_from
-      if (l.price_period) f['Payment'] = l.price_period
-      if (l.reference) f['Reference'] = l.reference
-      if (l.avg_rent_area) f['Avg rent in area'] = `${l.avg_rent_area} EGP`
-      break
-
-    case 'mktlist':
-      if (l.building_type) f['Building type'] = l.building_type
-      if (l.square_footage_raw) f['Square footage'] = l.square_footage_raw
-      if (l.parking_type) f['Parking'] = l.parking_type
-      if (l.total_parking) f['Parking spaces'] = l.total_parking
-      if (l.heating_type) f['Heating'] = l.heating_type
-      if (l.cooling) f['Cooling'] = l.cooling
-      if (l.flooring) f['Flooring'] = l.flooring
-      if (l.basement_type) f['Basement'] = l.basement_type
-      if (l.exterior_finish) f['Exterior'] = l.exterior_finish
-      if (l.province) f['Province'] = l.province
-      break
+// Features + amenities merged
+const featureList = computed(() => {
+  if (!l.value) return []
+  const result: string[] = []
+  for (const key of ['features', 'amenities']) {
+    const val = l.value[key]
+    if (Array.isArray(val)) result.push(...val.filter((f: any) => typeof f === 'string'))
+    else if (typeof val === 'string') {
+      try {
+        const parsed = JSON.parse(val)
+        if (Array.isArray(parsed)) result.push(...parsed.filter((f: any) => typeof f === 'string'))
+      } catch {}
+    }
   }
+  if (l.value.building_amenities && typeof l.value.building_amenities === 'string' && l.value.building_amenities.length > 2) {
+    result.push(l.value.building_amenities)
+  }
+  if (l.value.appliances && typeof l.value.appliances === 'string' && l.value.appliances.length > 2) {
+    result.push(l.value.appliances)
+  }
+  return [...new Set(result)]
+})
 
-  return f
+// Detail fields sidebar
+const details = computed(() => {
+  if (!l.value) return {}
+  const d: Record<string, any> = {}
+  const v = l.value
+
+  if (v.rooms) d['Rooms'] = v.rooms
+  if (v.bedrooms) d['Bedrooms'] = v.bedrooms
+  if (v.bathrooms) d['Bathrooms'] = v.bathrooms
+  if (v.shower_rooms) d['Shower rooms'] = v.shower_rooms
+  if (v.surface_m2) d['Surface'] = `${v.surface_m2} m²`
+  if (v.surface_sqft) d['Surface (sqft)'] = `${v.surface_sqft} sqft`
+  if (v.floor) d['Floor'] = v.floor
+  if (v.heating) d['Heating'] = v.heating
+  if (v.cooling) d['Cooling'] = v.cooling
+  if (v.flooring) d['Flooring'] = v.flooring
+  if (v.parking_type) d['Parking type'] = v.parking_type
+  if (v.parking_spaces) d['Parking spaces'] = v.parking_spaces
+  if (v.basement_type) d['Basement'] = v.basement_type
+  if (v.exterior_finish) d['Exterior'] = v.exterior_finish
+  if (v.building_type) d['Building type'] = v.building_type
+  if (v.terraces) d['Terraces'] = v.terraces
+  if (v.balconies) d['Balconies'] = v.balconies
+  if (v.cellars) d['Cellars'] = v.cellars
+  if (v.has_elevator === true) d['Elevator'] = 'Yes'
+  if (v.has_elevator === false) d['Elevator'] = 'No'
+  if (v.optical_fiber === true) d['Fiber optic'] = 'Yes'
+  if (v.charges) d['Charges'] = `${v.charges} ${v.currency}`
+  if (v.agency_fee) d['Agency fee'] = `${v.agency_fee} ${v.currency}`
+  if (v.rent_excluding_charges) d['Rent excl. charges'] = `${v.rent_excluding_charges} ${v.currency}`
+  if (v.price_per_m2) d['Price/m²'] = `${v.price_per_m2} ${v.currency}`
+  if (v.property_condition) d['Condition'] = v.property_condition
+  if (v.property_age) d['Age'] = v.property_age
+  if (v.orientation) d['Orientation'] = v.orientation
+  if (v.floor_type) d['Floor type'] = v.floor_type
+  if (v.available_from) d['Available from'] = v.available_from
+  if (v.compound) d['Compound'] = v.compound
+  if (v.province) d['Province'] = v.province
+  if (v.postal_code) d['Postal code'] = v.postal_code
+  if (v.department_code) d['Department'] = v.department_code
+  if (v.reference) d['Reference'] = v.reference
+  if (v.square_footage_raw) d['Square footage'] = v.square_footage_raw
+  if (v.listed_date) d['Listed'] = v.listed_date
+  if (v.added_on) d['Added on'] = v.added_on
+
+  return d
 })
 
 function formatPrice(price: number, currency: string): string {
@@ -335,11 +278,11 @@ function formatPrice(price: number, currency: string): string {
       style: 'currency', currency, maximumFractionDigits: 0,
     }).format(price)
   } catch {
-    return `${price.toLocaleString()} ${currency}`
+    return `${price?.toLocaleString()} ${currency}`
   }
 }
 
-useHead({ title: computed(() => displayTitle.value ? `${displayTitle.value} | RentGlobe` : 'Listing | RentGlobe') })
+useHead({ title: computed(() => l.value ? `${l.value.title || l.value.city || 'Listing'} | RentGlobe` : 'Listing | RentGlobe') })
 </script>
 
 <style scoped>
