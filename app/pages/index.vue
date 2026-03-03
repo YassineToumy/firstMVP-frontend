@@ -153,11 +153,11 @@
 
         <p v-else class="text-center py-12 text-gray-500 text-sm">No listings found for this region.</p>
 
-        <!-- Mobile CTA -->
-        <div class="mt-8 text-center sm:hidden">
+        <!-- View all button — visible on all sizes -->
+        <div v-if="listings.length" class="mt-10 text-center">
           <NuxtLink
             to="/listings"
-            class="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white text-sm font-medium rounded-xl hover:bg-orange-600 transition-colors"
+            class="inline-flex items-center gap-2 px-8 py-3.5 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 active:scale-[0.98] transition-all duration-200 shadow-sm shadow-orange-200"
           >
             View all listings
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -165,6 +165,7 @@
             </svg>
           </NuxtLink>
         </div>
+
       </div>
     </section>
 

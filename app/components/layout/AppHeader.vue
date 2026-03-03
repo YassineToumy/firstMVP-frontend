@@ -11,8 +11,9 @@
 
       <!-- Center nav -->
       <nav class="hidden md:flex items-center gap-1">
-        <NuxtLink to="/" class="nav-link">Home</NuxtLink>
-        <NuxtLink to="/listings" class="nav-link">Listings</NuxtLink>
+        <NuxtLink to="/conseils" class="nav-link">Conseils</NuxtLink>
+        <NuxtLink to="/contact" class="nav-link">Contact</NuxtLink>
+        <NuxtLink to="/about" class="nav-link">About us</NuxtLink>
         <div class="mx-2 w-px h-5 bg-gray-200" />
         <LayoutRegionSelector />
       </nav>
@@ -60,8 +61,9 @@
     >
       <div v-if="mobileOpen" class="md:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-1">
         <LayoutRegionSelector />
-        <NuxtLink to="/" class="block px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50" @click="mobileOpen = false">Home</NuxtLink>
-        <NuxtLink to="/listings" class="block px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50" @click="mobileOpen = false">Listings</NuxtLink>
+        <NuxtLink to="/conseils" class="block px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50" @click="mobileOpen = false">Conseils</NuxtLink>
+        <NuxtLink to="/contact" class="block px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50" @click="mobileOpen = false">Contact</NuxtLink>
+        <NuxtLink to="/about" class="block px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50" @click="mobileOpen = false">About us</NuxtLink>
         <template v-if="!isLoggedIn">
           <div class="pt-2 border-t border-gray-100">
             <NuxtLink to="/register" class="block w-full text-center px-3 py-2.5 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600" @click="mobileOpen = false">
