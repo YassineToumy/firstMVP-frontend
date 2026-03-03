@@ -144,12 +144,12 @@ const tips = [
   {
     icon: '📄',
     title: 'Lisez attentivement le contrat',
-    desc: 'Ne signez jamais un bail sans l'avoir lu en entier. Portez attention aux clauses de résiliation, au montant des charges et aux conditions de renouvellement.',
+    desc: "Ne signez jamais un bail sans l'avoir lu en entier. Portez attention aux clauses de résiliation, au montant des charges et aux conditions de renouvellement.",
   },
   {
     icon: '💶',
     title: 'Évaluez le budget total',
-    desc: 'Le loyer ne constitue pas la seule dépense. Prenez en compte les charges, la taxe d'habitation, les assurances et les éventuels frais d'agence.',
+    desc: "Le loyer ne constitue pas la seule dépense. Prenez en compte les charges, la taxe d'habitation, les assurances et les éventuels frais d'agence.",
   },
   {
     icon: '📸',
