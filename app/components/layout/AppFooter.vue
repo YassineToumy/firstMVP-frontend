@@ -14,7 +14,7 @@
               placeholder="Enter your email address"
               class="flex-1 sm:w-64 px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-orange-500/50"
             />
-            <button class="px-5 py-2.5 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 transition-colors whitespace-nowrap">
+            <button class="px-4 py-2.5 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 transition-colors whitespace-nowrap">
               Subscribe
             </button>
           </div>
