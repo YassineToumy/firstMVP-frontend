@@ -7,16 +7,16 @@
       <!-- Results header -->
       <div class="flex items-center justify-between mb-6">
         <div>
-          <h1 class="text-xl font-bold text-[#0a0a0a]">
+          <h1 class="text-xl font-bold text-gray-900">
             Rentals in {{ region.current.name }}
           </h1>
           <p v-if="meta" class="text-sm text-gray-500 mt-0.5">
             {{ meta.total.toLocaleString() }} properties found
           </p>
         </div>
-        <!-- View toggle (future) -->
+        <!-- View toggle -->
         <div class="hidden sm:flex items-center gap-1 bg-white rounded-lg border border-gray-200 p-0.5">
-          <button class="p-1.5 rounded bg-[#0a0a0a] text-white">
+          <button class="p-1.5 rounded bg-orange-500 text-white">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
             </svg>
@@ -61,7 +61,7 @@
         </div>
         <p class="text-gray-600 font-medium">No listings match your filters</p>
         <p class="text-sm text-gray-400 mt-1">Try adjusting your search criteria</p>
-        <button @click="resetAndLoad" class="mt-4 text-sm font-medium text-violet-600 hover:text-violet-700 transition-colors">
+        <button @click="resetAndLoad" class="mt-4 text-sm font-medium text-orange-500 hover:text-orange-600 transition-colors">
           Clear all filters
         </button>
       </div>

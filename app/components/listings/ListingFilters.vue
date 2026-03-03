@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white/95 backdrop-blur-lg border-b border-gray-100 sticky top-16 z-40">
+  <div class="bg-white border-b border-gray-200 sticky top-16 z-40 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
       <div class="flex flex-wrap items-center gap-2.5">
         <!-- Property type -->
@@ -52,7 +52,7 @@
         <!-- Reset -->
         <button
           @click="reset"
-          class="text-xs text-gray-400 hover:text-[#0a0a0a] px-2.5 py-1.5 rounded-lg hover:bg-gray-50 transition-all"
+          class="text-xs text-gray-400 hover:text-orange-500 px-2.5 py-1.5 rounded-lg hover:bg-orange-50 transition-all"
         >
           Reset
         </button>
@@ -86,7 +86,7 @@ function reset() {
 @reference "tailwindcss";
 .filter-chip {
   @apply text-xs border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700
-    focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-400
+    focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400
     hover:border-gray-300 transition-all duration-150 cursor-pointer;
 }
 </style>

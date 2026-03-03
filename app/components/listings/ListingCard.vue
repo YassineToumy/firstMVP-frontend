@@ -23,7 +23,7 @@
         <span v-if="listing.property_type" class="badge-glass">
           {{ listing.property_type }}
         </span>
-        <span v-if="listing.is_furnished" class="badge-glass bg-emerald-500/80 text-white border-emerald-400/30">
+        <span v-if="listing.is_furnished" class="badge-glass bg-orange-500/80 text-white border-orange-400/30">
           Furnished
         </span>
       </div>
@@ -50,7 +50,7 @@
     <!-- Content -->
     <div class="p-4">
       <!-- Price -->
-      <p class="text-lg font-bold text-[#0a0a0a]">
+      <p class="text-lg font-bold text-gray-900">
         {{ formatPrice(listing.price, listing.currency) }}
         <span class="text-xs font-normal text-gray-400">/month</span>
       </p>

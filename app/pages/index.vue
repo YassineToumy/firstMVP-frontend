@@ -9,96 +9,103 @@
           alt=""
           class="w-full h-full object-cover"
         />
-        <!-- Dark overlay with gradient -->
-        <div class="absolute inset-0 bg-[#0a0a0a]/90" />
+        <div class="absolute inset-0 bg-[#0a0a0a]/85" />
       </div>
 
-      <!-- Animated accent blobs (on top of image) -->
+      <!-- Animated accent blobs -->
       <div class="absolute inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-violet-600/20 to-transparent rounded-full blur-3xl animate-pulse-slow" />
-        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-emerald-600/15 to-transparent rounded-full blur-3xl animate-pulse-slow animation-delay-2000" />
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-orange-600/20 to-transparent rounded-full blur-3xl animate-pulse-slow" />
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-orange-400/10 to-transparent rounded-full blur-3xl animate-pulse-slow animation-delay-2000" />
       </div>
 
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 text-center">
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32">
         <!-- Badge -->
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400 mb-6 animate-fade-in-up">
-          <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping-soft" />
+          <span class="w-1.5 h-1.5 bg-orange-400 rounded-full animate-ping-soft" />
           <span>{{ totalListings }} active listings across 4 countries</span>
         </div>
 
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight animate-fade-in-up animation-delay-100">
+        <!-- Headline -->
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight animate-fade-in-up animation-delay-100 max-w-3xl">
           Find your perfect
-          <span class="relative">
-            <span class="bg-gradient-to-r from-violet-400 to-emerald-400 bg-clip-text text-transparent">rental home</span>
-          </span>
+          <span class="text-orange-400">rental home</span>
+          abroad
         </h1>
 
-        <p class="mt-5 text-lg text-gray-400 max-w-xl mx-auto animate-fade-in-up animation-delay-200">
-          Browse thousands of verified rental listings across
-          France, Tunisia, Egypt &amp; Canada — all in one place.
+        <!-- Declaration paragraph -->
+        <p class="mt-5 text-base text-gray-400 max-w-2xl animate-fade-in-up animation-delay-200 leading-relaxed">
+          RentGlobe aggregates thousands of verified rental listings from the top real estate platforms
+          across France, Tunisia, Egypt &amp; Canada — all in one place. Whether you're relocating,
+          studying abroad, or planning a long stay, find the right property at the right price.
         </p>
 
         <!-- Search bar -->
-        <div class="mt-10 max-w-3xl mx-auto animate-fade-in-up animation-delay-300">
-          <div class="flex flex-col sm:flex-row bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-2 gap-2">
+        <div class="mt-10 max-w-3xl animate-fade-in-up animation-delay-300">
+          <div class="flex flex-col sm:flex-row bg-white rounded-2xl p-2 gap-2 shadow-xl">
             <div class="relative flex-1">
-              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <input
                 v-model="searchCity"
                 type="text"
                 placeholder="Search by city, district, or keyword..."
-                class="w-full pl-10 pr-4 py-3.5 bg-transparent text-white text-sm placeholder-gray-500 focus:outline-none"
+                class="w-full pl-10 pr-4 py-3.5 bg-transparent text-gray-900 text-sm placeholder-gray-400 focus:outline-none"
                 @keyup.enter="goSearch"
               />
             </div>
 
-            <select v-model="searchType" class="px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-sm text-gray-300 focus:outline-none focus:border-violet-500/50 cursor-pointer">
-              <option value="" class="bg-[#111]">All types</option>
-              <option value="apartment" class="bg-[#111]">Apartment</option>
-              <option value="house" class="bg-[#111]">House</option>
+            <select v-model="searchType" class="px-4 py-3.5 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:border-orange-400 cursor-pointer bg-white">
+              <option value="">All types</option>
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
             </select>
 
             <button
               @click="goSearch"
-              class="px-8 py-3.5 bg-white text-[#0a0a0a] text-sm font-semibold rounded-xl hover:bg-gray-100 active:scale-[0.98] transition-all duration-200"
+              class="px-8 py-3.5 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 active:scale-[0.98] transition-all duration-200"
             >
               Search
             </button>
           </div>
         </div>
 
-        <!-- Quick region chips -->
-        <div class="mt-6 flex flex-wrap justify-center gap-2 animate-fade-in-up animation-delay-400">
+        <!-- Region selector cards -->
+        <div class="mt-5 flex flex-wrap gap-3 animate-fade-in-up animation-delay-400">
+          <p class="w-full text-xs text-gray-500 mb-1">Search in:</p>
           <button
             v-for="r in quickRegions"
             :key="r.code"
-            @click="switchRegionAndSearch(r.code)"
-            class="px-4 py-2 text-xs text-gray-400 border border-white/10 rounded-full hover:border-white/30 hover:text-white transition-all duration-200"
+            @click="selectRegion(r.code)"
+            class="flex items-center gap-2 px-4 py-2.5 rounded-xl backdrop-blur border-2 text-sm font-medium transition-all duration-200"
+            :class="region.currentCode === r.code
+              ? 'border-orange-400 bg-orange-500/20 text-white'
+              : 'border-white/15 bg-white/10 text-gray-300 hover:border-white/35 hover:bg-white/15 hover:text-white'"
           >
-            {{ r.flag }} {{ r.name }}
+            <span class="text-base">{{ r.flag }}</span>
+            <span>{{ r.name }}</span>
+            <span v-if="regionCountMap[r.code]" class="text-[11px] opacity-60">({{ regionCountMap[r.code]?.toLocaleString() }})</span>
           </button>
         </div>
       </div>
     </section>
 
-    <!-- Region stats bar -->
+    <!-- Stats bar -->
     <section class="bg-white border-b border-gray-100">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-0 divide-x divide-gray-100">
           <div
             v-for="(r, i) in regionStats"
             :key="r.code"
-            class="text-center group cursor-pointer"
-            :class="{ 'animate-fade-in-up': true }"
+            class="text-center group cursor-pointer px-6 py-2"
             :style="{ animationDelay: `${i * 100}ms` }"
             @click="switchRegionAndSearch(r.code)"
           >
-            <p class="text-2xl sm:text-3xl font-bold text-[#0a0a0a] tabular-nums group-hover:text-violet-600 transition-colors">
+            <p class="text-2xl sm:text-3xl font-bold text-gray-900 tabular-nums group-hover:text-orange-500 transition-colors">
               {{ animatedCount(r.count) }}
             </p>
-            <p class="text-xs text-gray-500 mt-1 group-hover:text-gray-700 transition-colors">
+            <p class="text-xs text-gray-500 mt-1.5 group-hover:text-gray-700 transition-colors flex items-center justify-center gap-1">
+              <span>{{ regionEmoji(r.code) }}</span>
               {{ r.name }}
             </p>
           </div>
@@ -111,14 +118,14 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div class="flex items-end justify-between mb-8">
           <div>
-            <h2 class="text-2xl font-bold text-[#0a0a0a]">Recent listings</h2>
+            <h2 class="text-2xl font-bold text-gray-900">Recent listings</h2>
             <p class="text-sm text-gray-500 mt-1">
-              Showing latest from {{ region.current.name }}
+              Latest properties in {{ region.current.name }}
             </p>
           </div>
           <NuxtLink
             to="/listings"
-            class="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-[#0a0a0a] hover:text-violet-600 transition-colors group"
+            class="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-orange-500 hover:text-orange-600 transition-colors group"
           >
             View all
             <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,7 +136,7 @@
 
         <!-- Loading skeleton -->
         <div v-if="loadingListings" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <div v-for="n in 8" :key="n" class="bg-white rounded-2xl overflow-hidden">
+          <div v-for="n in 8" :key="n" class="bg-white rounded-2xl overflow-hidden border border-gray-100">
             <div class="aspect-[4/3] bg-gray-100 animate-pulse" />
             <div class="p-4 space-y-3">
               <div class="h-5 bg-gray-100 rounded animate-pulse w-2/3" />
@@ -150,7 +157,7 @@
         <div class="mt-8 text-center sm:hidden">
           <NuxtLink
             to="/listings"
-            class="inline-flex items-center gap-2 px-6 py-3 bg-[#0a0a0a] text-white text-sm font-medium rounded-xl hover:bg-[#222] transition-colors"
+            class="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 text-white text-sm font-medium rounded-xl hover:bg-orange-600 transition-colors"
           >
             View all listings
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,42 +171,82 @@
     <!-- How it works -->
     <section class="bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-        <h2 class="text-2xl font-bold text-[#0a0a0a] text-center">How RentGlobe works</h2>
-        <p class="text-sm text-gray-500 text-center mt-2 max-w-md mx-auto">
-          We aggregate rental listings from trusted sources across multiple countries
-        </p>
+        <div class="text-center mb-12">
+          <span class="inline-block text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">How it works</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Find your rental in 3 simple steps</h2>
+          <p class="text-sm text-gray-500 mt-2 max-w-md mx-auto">
+            We aggregate listings from trusted sources across multiple countries
+          </p>
+        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-12">
-          <div v-for="(step, i) in steps" :key="i" class="text-center group">
-            <div class="w-14 h-14 mx-auto rounded-2xl bg-[#FAFAFA] border border-gray-100 flex items-center justify-center group-hover:border-violet-200 group-hover:bg-violet-50 transition-all duration-300">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 relative">
+          <div v-for="(step, i) in steps" :key="i" class="text-center group relative">
+            <!-- Connector line -->
+            <div v-if="i < 2" class="hidden sm:block absolute top-7 left-[calc(50%+2.5rem)] right-[-calc(50%-2.5rem)] h-px bg-gray-200 z-0" />
+
+            <div class="relative z-10 w-14 h-14 mx-auto rounded-2xl bg-orange-50 border-2 border-orange-100 flex items-center justify-center group-hover:bg-orange-100 group-hover:border-orange-300 transition-all duration-300">
               <span class="text-2xl">{{ step.icon }}</span>
             </div>
-            <h3 class="mt-4 font-semibold text-[#0a0a0a]">{{ step.title }}</h3>
+            <div class="mt-3 w-6 h-6 mx-auto rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center">
+              {{ i + 1 }}
+            </div>
+            <h3 class="mt-3 font-semibold text-gray-900">{{ step.title }}</h3>
             <p class="mt-2 text-sm text-gray-500 max-w-xs mx-auto">{{ step.desc }}</p>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- Region explorer -->
+    <section class="bg-[#FAFAFA]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center mb-10">
+          <h2 class="text-2xl font-bold text-gray-900">Explore by country</h2>
+          <p class="text-sm text-gray-500 mt-2">Discover rental markets in each region</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <button
+            v-for="r in countryCards"
+            :key="r.code"
+            @click="switchRegionAndSearch(r.code)"
+            class="group relative overflow-hidden rounded-2xl border-2 border-gray-100 bg-white p-6 text-left hover:border-orange-200 hover:shadow-md transition-all duration-300"
+          >
+            <div class="text-4xl mb-3">{{ r.flag }}</div>
+            <h3 class="font-bold text-gray-900 group-hover:text-orange-500 transition-colors">{{ r.name }}</h3>
+            <p class="text-xs text-gray-500 mt-1">{{ r.currency }}</p>
+            <div v-if="regionCountMap[r.code]" class="mt-3 text-sm font-semibold text-orange-500">
+              {{ regionCountMap[r.code]?.toLocaleString() }} listings
+            </div>
+            <div class="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- CTA -->
-    <section class="bg-[#0a0a0a]">
+    <section class="bg-orange-500">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
         <h2 class="text-2xl sm:text-3xl font-bold text-white">
           Ready to find your next home?
         </h2>
-        <p class="mt-3 text-gray-400 max-w-md mx-auto text-sm">
+        <p class="mt-3 text-orange-100 max-w-md mx-auto text-sm">
           Join thousands of renters who discovered their ideal property through RentGlobe.
         </p>
         <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <NuxtLink
             to="/listings"
-            class="inline-flex items-center justify-center px-8 py-3 bg-white text-[#0a0a0a] text-sm font-semibold rounded-xl hover:bg-gray-100 transition-colors"
+            class="inline-flex items-center justify-center px-8 py-3 bg-white text-orange-600 text-sm font-semibold rounded-xl hover:bg-orange-50 transition-colors"
           >
             Browse listings
           </NuxtLink>
           <NuxtLink
             to="/register"
-            class="inline-flex items-center justify-center px-8 py-3 border border-white/20 text-white text-sm font-medium rounded-xl hover:bg-white/5 transition-colors"
+            class="inline-flex items-center justify-center px-8 py-3 border-2 border-white/40 text-white text-sm font-medium rounded-xl hover:bg-white/10 transition-colors"
           >
             Create account
           </NuxtLink>
@@ -222,20 +269,36 @@ const listings = ref<Listing[]>([])
 const regionStats = ref<{ code: string; name: string; currency: string; count: number }[]>([])
 const loadingListings = ref(true)
 
-// Dark modern building facade at night — by Mike Hindle on Unsplash (free commercial use)
-// Replace with /images/hero-bg.jpg once downloaded to your public/ folder
 const heroImage = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80&auto=format&fit=crop'
 
 const totalListings = computed(() =>
   regionStats.value.reduce((s, r) => s + (r.count || 0), 0).toLocaleString()
 )
 
+const regionCountMap = computed(() => {
+  const map: Record<string, number> = {}
+  for (const r of regionStats.value) {
+    map[r.code.toUpperCase()] = r.count
+  }
+  return map
+})
+
 const quickRegions = [
-  { code: 'fr', name: 'France', flag: '🇫🇷' },
-  { code: 'tn', name: 'Tunisia', flag: '🇹🇳' },
-  { code: 'eg', name: 'Egypt', flag: '🇪🇬' },
-  { code: 'ca', name: 'Canada', flag: '🇨🇦' },
+  { code: 'FR', name: 'France', flag: '🇫🇷' },
+  { code: 'TN', name: 'Tunisia', flag: '🇹🇳' },
+  { code: 'EG', name: 'Egypt', flag: '🇪🇬' },
+  { code: 'CA', name: 'Canada', flag: '🇨🇦' },
 ]
+
+const countryCards = [
+  { code: 'FR', name: 'France', flag: '🇫🇷', currency: 'EUR — Euro' },
+  { code: 'TN', name: 'Tunisia', flag: '🇹🇳', currency: 'TND — Dinar' },
+  { code: 'EG', name: 'Egypt', flag: '🇪🇬', currency: 'EGP — Pound' },
+  { code: 'CA', name: 'Canada', flag: '🇨🇦', currency: 'CAD — Dollar' },
+]
+
+const emojiMap: Record<string, string> = { FR: '🇫🇷', TN: '🇹🇳', EG: '🇪🇬', CA: '🇨🇦' }
+function regionEmoji(code: string) { return emojiMap[code] || '' }
 
 const steps = [
   { icon: '🔍', title: 'Search', desc: 'Filter by city, price, type, and more across 4 countries.' },
@@ -273,6 +336,11 @@ function goSearch() {
   if (searchCity.value) q.city = searchCity.value
   if (searchType.value) q.property_type = searchType.value
   router.push({ path: '/listings', query: q })
+}
+
+function selectRegion(code: string) {
+  region.setRegion(code)
+  loadFeatured()
 }
 
 function switchRegionAndSearch(code: string) {

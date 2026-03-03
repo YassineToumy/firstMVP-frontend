@@ -2,13 +2,13 @@
   <div class="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 bg-[#FAFAFA]">
     <div class="w-full max-w-sm animate-fade-in-up">
       <!-- Icon -->
-      <div class="w-12 h-12 mx-auto rounded-2xl bg-gradient-to-br from-violet-500 to-emerald-500 flex items-center justify-center mb-6">
+      <div class="w-12 h-12 mx-auto rounded-2xl bg-gradient-to-br from-orange-500 to-orange-400 flex items-center justify-center mb-6">
         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
       </div>
 
-      <h1 class="text-2xl font-bold text-[#0a0a0a] text-center">Welcome back</h1>
+      <h1 class="text-2xl font-bold text-gray-900 text-center">Welcome back</h1>
       <p class="text-sm text-gray-500 text-center mt-1">Sign in to your RentGlobe account</p>
 
       <form @submit.prevent="handleLogin" class="mt-8 space-y-4">
@@ -29,14 +29,14 @@
         </Transition>
 
         <button type="submit" :disabled="loading"
-          class="w-full py-3 bg-[#0a0a0a] text-white text-sm font-semibold rounded-xl hover:bg-[#222] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+          class="w-full py-3 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
           {{ loading ? 'Signing in...' : 'Sign In' }}
         </button>
       </form>
 
       <p class="text-sm text-gray-500 text-center mt-8">
         Don't have an account?
-        <NuxtLink to="/register" class="text-[#0a0a0a] font-semibold hover:text-violet-600 transition-colors">Create one</NuxtLink>
+        <NuxtLink to="/register" class="text-orange-500 font-semibold hover:text-orange-600 transition-colors">Create one</NuxtLink>
       </p>
     </div>
   </div>
@@ -73,7 +73,7 @@ useHead({ title: 'Sign In | RentGlobe' })
 @reference "tailwindcss";
 .auth-input {
   @apply w-full px-3.5 py-3 bg-white border border-gray-200 rounded-xl text-sm
-    focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-400
+    focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400
     placeholder-gray-400 transition-all duration-150;
 }
 </style>

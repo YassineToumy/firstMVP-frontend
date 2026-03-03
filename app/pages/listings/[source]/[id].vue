@@ -157,7 +157,7 @@
             <h2 class="text-base font-semibold text-[#0a0a0a] mb-4">Features &amp; amenities</h2>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
               <div v-for="(f, i) in featureList" :key="i" class="flex items-center gap-2 text-sm text-gray-600 py-1.5">
-                <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-orange-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
                 {{ f }}
@@ -190,10 +190,10 @@
               <p v-if="l.agent_phone" class="text-xs text-gray-500">{{ l.agent_phone }}</p>
             </div>
 
-            <button class="mt-5 w-full py-3 bg-[#0a0a0a] text-white text-sm font-semibold rounded-xl hover:bg-[#222] active:scale-[0.98] transition-all">
+            <button class="mt-5 w-full py-3 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 active:scale-[0.98] transition-all">
               Contact agent
             </button>
-            <button class="mt-2 w-full py-3 border border-gray-200 text-[#0a0a0a] text-sm font-medium rounded-xl hover:bg-gray-50 transition-all">
+            <button class="mt-2 w-full py-3 border border-gray-200 text-gray-800 text-sm font-medium rounded-xl hover:bg-gray-50 transition-all">
               Schedule visit
             </button>
             <a
@@ -223,7 +223,7 @@
             <dl class="space-y-3 text-sm">
               <div v-if="l.energy_class" class="flex justify-between items-center">
                 <dt class="text-gray-500">Energy class</dt>
-                <dd class="text-lg font-bold px-3 py-0.5 rounded bg-emerald-50 text-emerald-700">{{ l.energy_class }}</dd>
+                <dd class="text-lg font-bold px-3 py-0.5 rounded bg-green-50 text-green-700">{{ l.energy_class }}</dd>
               </div>
               <div v-if="l.energy_value" class="flex justify-between">
                 <dt class="text-gray-500">Energy value</dt>
@@ -231,7 +231,7 @@
               </div>
               <div v-if="l.ghg_class" class="flex justify-between items-center">
                 <dt class="text-gray-500">GHG class</dt>
-                <dd class="text-lg font-bold px-3 py-0.5 rounded bg-violet-50 text-violet-700">{{ l.ghg_class }}</dd>
+                <dd class="text-lg font-bold px-3 py-0.5 rounded bg-orange-50 text-orange-600">{{ l.ghg_class }}</dd>
               </div>
               <div v-if="l.min_energy_cost && l.max_energy_cost" class="flex justify-between">
                 <dt class="text-gray-500">Energy cost</dt>
@@ -263,7 +263,7 @@
     <!-- Not found -->
     <div v-else class="max-w-7xl mx-auto px-4 py-24 text-center">
       <p class="text-gray-500">Listing not found.</p>
-      <NuxtLink to="/listings" class="mt-3 inline-block text-sm font-medium text-violet-600 hover:text-violet-700 transition-colors">
+      <NuxtLink to="/listings" class="mt-3 inline-block text-sm font-medium text-orange-500 hover:text-orange-600 transition-colors">
         ← Back to listings
       </NuxtLink>
     </div>
@@ -388,10 +388,10 @@ useHead({ title: computed(() => l.value ? `${l.value.title || l.value.city || 'L
   @apply bg-gray-100 text-gray-600 text-[11px] font-medium px-2.5 py-1 rounded-lg;
 }
 .tag-green {
-  @apply bg-emerald-50 text-emerald-700;
+  @apply bg-green-50 text-green-700;
 }
 .tag-violet {
-  @apply bg-violet-50 text-violet-700;
+  @apply bg-orange-50 text-orange-600;
 }
 .stat-box {
   @apply flex flex-col items-center px-5 py-3 bg-[#FAFAFA] rounded-xl;
