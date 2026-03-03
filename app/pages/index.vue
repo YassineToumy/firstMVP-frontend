@@ -78,7 +78,7 @@
             :key="r.code"
             @click="selectRegion(r.code)"
             class="flex items-center gap-2 px-4 py-2.5 rounded-xl backdrop-blur border-2 text-sm font-medium transition-all duration-200"
-            :class="region.currentCode === r.code
+            :class="localSelectedCode === r.code
               ? 'border-orange-400 bg-orange-500/20 text-white'
               : 'border-white/15 bg-white/10 text-gray-300 hover:border-white/35 hover:bg-white/15 hover:text-white'"
           >
@@ -120,10 +120,12 @@
           <div>
             <h2 class="text-2xl font-bold text-gray-900">Recent listings</h2>
             <p class="text-sm text-gray-500 mt-1">
-              Latest properties in {{ region.current.name }}
+              <template v-if="localSelectedCode">Latest properties in {{ region.current.name }}</template>
+              <template v-else>Select a region above to see listings</template>
             </p>
           </div>
           <NuxtLink
+            v-if="localSelectedCode"
             to="/listings"
             class="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-orange-500 hover:text-orange-600 transition-colors group"
           >
@@ -134,8 +136,15 @@
           </NuxtLink>
         </div>
 
+        <!-- Prompt — no region selected yet -->
+        <div v-if="!localSelectedCode" class="py-16 flex flex-col items-center justify-center gap-4 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-orange-50 border-2 border-orange-100 flex items-center justify-center text-3xl">🌍</div>
+          <p class="text-gray-700 font-medium">Choisissez votre région</p>
+          <p class="text-sm text-gray-400 max-w-xs">Sélectionnez un pays ci-dessus pour afficher les dernières annonces disponibles.</p>
+        </div>
+
         <!-- Loading skeleton -->
-        <div v-if="loadingListings" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div v-else-if="loadingListings" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           <div v-for="n in 8" :key="n" class="bg-white rounded-2xl overflow-hidden border border-gray-100">
             <div class="aspect-[4/3] bg-gray-100 animate-pulse" />
             <div class="p-4 space-y-3">
@@ -154,7 +163,7 @@
         <p v-else class="text-center py-12 text-gray-500 text-sm">No listings found for this region.</p>
 
         <!-- View all button — visible on all sizes -->
-        <div v-if="listings.length" class="mt-10 text-center">
+        <div v-if="listings.length && localSelectedCode" class="mt-10 text-center">
           <NuxtLink
             to="/listings"
             class="inline-flex items-center gap-2 px-8 py-3.5 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 active:scale-[0.98] transition-all duration-200 shadow-sm shadow-orange-200"
@@ -268,7 +277,8 @@ const searchCity = ref('')
 const searchType = ref('')
 const listings = ref<Listing[]>([])
 const regionStats = ref<{ code: string; name: string; currency: string; count: number }[]>([])
-const loadingListings = ref(true)
+const loadingListings = ref(false)
+const localSelectedCode = ref('')
 
 const heroImage = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80&auto=format&fit=crop'
 
@@ -340,6 +350,7 @@ function goSearch() {
 }
 
 function selectRegion(code: string) {
+  localSelectedCode.value = code
   region.setRegion(code)
   loadFeatured()
 }
@@ -349,10 +360,7 @@ function switchRegionAndSearch(code: string) {
   router.push('/listings')
 }
 
-watch(() => region.currentCode, () => loadFeatured())
-
 onMounted(() => {
-  loadFeatured()
   loadRegions()
 })
 

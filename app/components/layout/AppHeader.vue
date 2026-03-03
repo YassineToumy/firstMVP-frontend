@@ -15,7 +15,7 @@
         <NuxtLink to="/contact" class="nav-link">Contact</NuxtLink>
         <NuxtLink to="/about" class="nav-link">About us</NuxtLink>
         <div class="mx-2 w-px h-5 bg-gray-200" />
-        <LayoutRegionSelector />
+        <LayoutLanguageSelector />
       </nav>
 
       <!-- Right: Auth -->
@@ -60,7 +60,7 @@
       leave-to-class="opacity-0 -translate-y-2"
     >
       <div v-if="mobileOpen" class="md:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-1">
-        <LayoutRegionSelector />
+        <LayoutLanguageSelector />
         <NuxtLink to="/conseils" class="block px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50" @click="mobileOpen = false">Conseils</NuxtLink>
         <NuxtLink to="/contact" class="block px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50" @click="mobileOpen = false">Contact</NuxtLink>
         <NuxtLink to="/about" class="block px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50" @click="mobileOpen = false">About us</NuxtLink>

@@ -16,7 +16,7 @@
         v-else
         @click="go(p as number)"
         class="page-btn w-10"
-        :class="p === currentPage ? 'bg-[#0a0a0a] text-white border-[#0a0a0a] hover:bg-[#222]' : ''"
+        :class="p === currentPage ? 'bg-orange-500 text-white border-orange-500 hover:bg-orange-600' : ''"
       >
         {{ p }}
       </button>
