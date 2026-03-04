@@ -90,29 +90,7 @@
       </div>
     </section>
 
-    <!-- Stats bar -->
-    <section class="bg-white border-b border-gray-100">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-0 divide-x divide-gray-100">
-          <div
-            v-for="(r, i) in regionStats"
-            :key="r.code"
-            class="text-center group cursor-pointer px-6 py-2"
-            :style="{ animationDelay: `${i * 100}ms` }"
-            @click="switchRegionAndSearch(r.code)"
-          >
-            <p class="text-2xl sm:text-3xl font-bold text-gray-900 tabular-nums group-hover:text-orange-500 transition-colors">
-              {{ animatedCount(r.count) }}
-            </p>
-            <p class="text-xs text-gray-500 mt-1.5 group-hover:text-gray-700 transition-colors flex items-center justify-center gap-1.5">
-              <img :src="`https://flagcdn.com/20x15/${r.code.toLowerCase()}.png`" :alt="r.name" class="w-4 rounded-sm" />
-              {{ r.name }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
+     
     <!-- Recent listings -->
     <section class="bg-[#FAFAFA]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
