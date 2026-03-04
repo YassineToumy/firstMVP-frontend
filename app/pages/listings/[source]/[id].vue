@@ -118,28 +118,34 @@
             </div>
 
             <!-- Key stats -->
-            <div class="flex flex-wrap gap-5 mt-5">
+            <div class="flex flex-wrap gap-4 mt-5">
               <div v-if="l.bedrooms" class="stat-box">
+                <Icon name="lucide:bed" class="w-5 h-5 text-orange-400 mb-1" />
                 <span class="stat-val">{{ l.bedrooms }}</span>
                 <span class="stat-label">Bedrooms</span>
               </div>
               <div v-if="l.bathrooms" class="stat-box">
+                <Icon name="lucide:bath" class="w-5 h-5 text-orange-400 mb-1" />
                 <span class="stat-val">{{ l.bathrooms }}</span>
                 <span class="stat-label">Bathrooms</span>
               </div>
               <div v-if="l.rooms && l.rooms !== l.bedrooms" class="stat-box">
+                <Icon name="lucide:layout-grid" class="w-5 h-5 text-orange-400 mb-1" />
                 <span class="stat-val">{{ l.rooms }}</span>
                 <span class="stat-label">Rooms</span>
               </div>
               <div v-if="l.surface_m2" class="stat-box">
+                <Icon name="lucide:ruler" class="w-5 h-5 text-orange-400 mb-1" />
                 <span class="stat-val">{{ l.surface_m2 }}</span>
                 <span class="stat-label">m²</span>
               </div>
               <div v-if="l.surface_sqft" class="stat-box">
+                <Icon name="lucide:ruler" class="w-5 h-5 text-orange-400 mb-1" />
                 <span class="stat-val">{{ l.surface_sqft }}</span>
                 <span class="stat-label">sqft</span>
               </div>
               <div v-if="l.floor" class="stat-box">
+                <Icon name="lucide:layers" class="w-5 h-5 text-orange-400 mb-1" />
                 <span class="stat-val">{{ l.floor }}</span>
                 <span class="stat-label">Floor</span>
               </div>

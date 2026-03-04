@@ -195,7 +195,7 @@ const languages = [
   { code: 'fr', cc: 'fr', name: 'French', countries: 'France, Tunisia' },
   { code: 'ar', cc: 'sa', name: 'Arabic', countries: 'Tunisia, Egypt' },
   { code: 'en', cc: 'gb', name: 'English', countries: 'Canada, Egypt' },
-  { code: 'ca', cc: 'ca', name: 'Canadian FR', countries: 'Canada' },
+  { code: 'es', cc: 'es', name: 'Español', countries: 'Spain, Latin America' },
 ]
 
 const values = [
