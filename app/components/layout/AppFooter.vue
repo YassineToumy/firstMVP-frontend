@@ -79,16 +79,16 @@
           <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Explore Regions</h4>
           <div class="space-y-3 text-sm">
             <button @click="goToRegion('FR')" class="flex items-center gap-2 hover:text-white transition-colors w-full text-left">
-              <span>🇫🇷</span> France
+              <img src="https://flagcdn.com/20x15/fr.png" alt="France" class="w-5 rounded-sm" /> France
             </button>
             <button @click="goToRegion('TN')" class="flex items-center gap-2 hover:text-white transition-colors w-full text-left">
-              <span>🇹🇳</span> Tunisia
+              <img src="https://flagcdn.com/20x15/tn.png" alt="Tunisia" class="w-5 rounded-sm" /> Tunisia
             </button>
             <button @click="goToRegion('EG')" class="flex items-center gap-2 hover:text-white transition-colors w-full text-left">
-              <span>🇪🇬</span> Egypt
+              <img src="https://flagcdn.com/20x15/eg.png" alt="Egypt" class="w-5 rounded-sm" /> Egypt
             </button>
             <button @click="goToRegion('CA')" class="flex items-center gap-2 hover:text-white transition-colors w-full text-left">
-              <span>🇨🇦</span> Canada
+              <img src="https://flagcdn.com/20x15/ca.png" alt="Canada" class="w-5 rounded-sm" /> Canada
             </button>
           </div>
         </div>

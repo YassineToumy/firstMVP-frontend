@@ -30,8 +30,8 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div v-for="tip in tips" :key="tip.title" class="bg-[#FAFAFA] border border-gray-100 rounded-2xl p-6 hover:border-orange-200 hover:shadow-sm transition-all duration-300">
-            <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center mb-4 text-xl">
-              {{ tip.icon }}
+            <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center mb-4">
+              <Icon :name="tip.icon" class="w-5 h-5 text-orange-500" />
             </div>
             <h3 class="font-semibold text-gray-900 mb-2">{{ tip.title }}</h3>
             <p class="text-sm text-gray-500 leading-relaxed">{{ tip.desc }}</p>
@@ -57,8 +57,8 @@
             class="bg-white border border-gray-100 rounded-2xl p-6 hover:border-orange-200 hover:shadow-sm transition-all duration-300"
           >
             <div class="flex items-start gap-4">
-              <div class="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center flex-shrink-0 text-xl">
-                {{ type.icon }}
+              <div class="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center flex-shrink-0">
+                <Icon :name="type.icon" class="w-6 h-6 text-orange-500" />
               </div>
               <div>
                 <div class="flex items-center gap-2 mb-1">
@@ -137,32 +137,32 @@
 <script setup lang="ts">
 const tips = [
   {
-    icon: '🔍',
+    icon: 'lucide:search',
     title: 'Vérifiez le logement avant de signer',
     desc: "Visitez le bien en personne ou via vidéo, vérifiez l'état des équipements, les compteurs et l'état général des lieux.",
   },
   {
-    icon: '📄',
+    icon: 'lucide:file-text',
     title: 'Lisez attentivement le contrat',
     desc: "Ne signez jamais un bail sans l'avoir lu en entier. Portez attention aux clauses de résiliation, au montant des charges et aux conditions de renouvellement.",
   },
   {
-    icon: '💶',
+    icon: 'lucide:euro',
     title: 'Évaluez le budget total',
     desc: "Le loyer ne constitue pas la seule dépense. Prenez en compte les charges, la taxe d'habitation, les assurances et les éventuels frais d'agence.",
   },
   {
-    icon: '📸',
+    icon: 'lucide:camera',
     title: "Faites un état des lieux détaillé",
     desc: "À l'entrée comme à la sortie, photographiez chaque pièce et notez toute imperfection pour éviter les litiges sur le dépôt de garantie.",
   },
   {
-    icon: '🏛️',
+    icon: 'lucide:landmark',
     title: 'Connaissez vos droits',
     desc: "La législation varie selon les pays. Renseignez-vous sur les délais de préavis, les règles d'augmentation du loyer et vos recours en cas de litige.",
   },
   {
-    icon: '🤝',
+    icon: 'lucide:handshake',
     title: 'Communiquez avec le propriétaire',
     desc: "Entretenez une relation de confiance avec votre bailleur. Signalez rapidement toute panne ou dommage pour éviter des complications ultérieures.",
   },
@@ -170,7 +170,7 @@ const tips = [
 
 const rentalTypes = [
   {
-    icon: '🛋️',
+    icon: 'lucide:sofa',
     name: 'Location meublée',
     badge: 'Flexible',
     desc: "Le logement est fourni avec tous les meubles et équipements nécessaires à la vie quotidienne.",
@@ -181,7 +181,7 @@ const rentalTypes = [
     ],
   },
   {
-    icon: '🏠',
+    icon: 'lucide:home',
     name: 'Location non meublée (vide)',
     badge: 'Long terme',
     desc: "Le logement est livré sans mobilier. Le locataire apporte ses propres meubles et équipements.",
@@ -192,7 +192,7 @@ const rentalTypes = [
     ],
   },
   {
-    icon: '📅',
+    icon: 'lucide:calendar',
     name: 'Location saisonnière',
     badge: 'Court séjour',
     desc: "Location temporaire pour des vacances ou des déplacements professionnels, sur une durée limitée.",
@@ -203,7 +203,7 @@ const rentalTypes = [
     ],
   },
   {
-    icon: '🏢',
+    icon: 'lucide:building-2',
     name: 'Location professionnelle / commerciale',
     badge: 'Business',
     desc: "Bail destiné à un usage professionnel ou commercial, distinct du bail résidentiel.",

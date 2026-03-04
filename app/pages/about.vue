@@ -62,8 +62,8 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div v-for="actor in actors" :key="actor.title" class="bg-white border border-gray-100 rounded-2xl p-7 text-center hover:border-orange-200 hover:shadow-sm transition-all duration-300 group">
-            <div class="w-14 h-14 mx-auto rounded-2xl bg-orange-50 border-2 border-orange-100 flex items-center justify-center mb-4 text-2xl group-hover:bg-orange-100 group-hover:border-orange-300 transition-all">
-              {{ actor.icon }}
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-orange-50 border-2 border-orange-100 flex items-center justify-center mb-4 group-hover:bg-orange-100 group-hover:border-orange-300 transition-all">
+              <Icon :name="actor.icon" class="w-7 h-7 text-orange-500" />
             </div>
             <h3 class="font-bold text-gray-900 group-hover:text-orange-500 transition-colors">{{ actor.title }}</h3>
             <p class="text-sm text-gray-500 mt-2 leading-relaxed">{{ actor.desc }}</p>
@@ -83,7 +83,7 @@
               :key="lang.code"
               class="bg-[#FAFAFA] border border-gray-100 rounded-2xl p-5 flex items-center gap-3 hover:border-orange-200 hover:shadow-sm transition-all duration-200"
             >
-              <span class="text-3xl">{{ lang.flag }}</span>
+              <img :src="`https://flagcdn.com/40x30/${lang.cc}.png`" :alt="lang.name" class="w-10 h-auto rounded" />
               <div>
                 <p class="font-semibold text-gray-900 text-sm">{{ lang.name }}</p>
                 <p class="text-xs text-gray-400">{{ lang.countries }}</p>
@@ -112,7 +112,8 @@
                 :key="lang.code"
                 class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 text-orange-600 text-xs font-medium rounded-full border border-orange-100"
               >
-                {{ lang.flag }} {{ lang.name }}
+                <img :src="`https://flagcdn.com/20x15/${lang.cc}.png`" :alt="lang.name" class="w-4 rounded-sm" />
+                {{ lang.name }}
               </span>
             </div>
           </div>
@@ -128,7 +129,9 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           <div v-for="value in values" :key="value.title" class="bg-white border border-gray-100 rounded-2xl p-6 hover:border-orange-200 transition-all">
-            <div class="text-2xl mb-3">{{ value.icon }}</div>
+            <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center mb-3">
+              <Icon :name="value.icon" class="w-5 h-5 text-orange-500" />
+            </div>
             <h3 class="font-semibold text-gray-900 mb-2">{{ value.title }}</h3>
             <p class="text-sm text-gray-500 leading-relaxed">{{ value.desc }}</p>
           </div>
@@ -172,34 +175,34 @@ const stats = [
 
 const actors = [
   {
-    icon: '👤',
+    icon: 'lucide:user',
     title: 'Individuals (Particuliers)',
     desc: 'Private landlords who list their property directly — no intermediary, direct contact with the tenant.',
   },
   {
-    icon: '🏢',
+    icon: 'lucide:building-2',
     title: 'Real estate agencies',
     desc: 'Professional agencies managing multiple properties across cities and countries, featured prominently on our platform.',
   },
   {
-    icon: '💼',
+    icon: 'lucide:briefcase',
     title: 'Professionals & Pros',
     desc: 'Property managers, developers, and real estate professionals who want to reach a wider, international audience.',
   },
 ]
 
 const languages = [
-  { code: 'fr', flag: '🇫🇷', name: 'French', countries: 'France, Tunisia' },
-  { code: 'ar', flag: '🌍', name: 'Arabic', countries: 'Tunisia, Egypt' },
-  { code: 'en', flag: '🇬🇧', name: 'English', countries: 'Canada, Egypt' },
-  { code: 'ca', flag: '🇨🇦', name: 'Canadian FR', countries: 'Canada' },
+  { code: 'fr', cc: 'fr', name: 'French', countries: 'France, Tunisia' },
+  { code: 'ar', cc: 'sa', name: 'Arabic', countries: 'Tunisia, Egypt' },
+  { code: 'en', cc: 'gb', name: 'English', countries: 'Canada, Egypt' },
+  { code: 'ca', cc: 'ca', name: 'Canadian FR', countries: 'Canada' },
 ]
 
 const values = [
-  { icon: '🌍', title: 'Accessibility', desc: 'Everyone deserves access to a fair rental market, regardless of their language or location.' },
-  { icon: '🔍', title: 'Transparency', desc: 'We show real listings from verified sources with accurate information and no hidden fees.' },
-  { icon: '⚡', title: 'Efficiency', desc: 'Find the right property faster by searching across all platforms at once, from one place.' },
-  { icon: '🤝', title: 'Connection', desc: 'We bring tenants, landlords, agencies and professionals together in a seamless experience.' },
+  { icon: 'lucide:globe', title: 'Accessibility', desc: 'Everyone deserves access to a fair rental market, regardless of their language or location.' },
+  { icon: 'lucide:search', title: 'Transparency', desc: 'We show real listings from verified sources with accurate information and no hidden fees.' },
+  { icon: 'lucide:zap', title: 'Efficiency', desc: 'Find the right property faster by searching across all platforms at once, from one place.' },
+  { icon: 'lucide:handshake', title: 'Connection', desc: 'We bring tenants, landlords, agencies and professionals together in a seamless experience.' },
 ]
 
 useHead({ title: 'About Us — RentGlobe' })

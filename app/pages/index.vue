@@ -82,7 +82,7 @@
               ? 'border-orange-400 bg-orange-500/20 text-white'
               : 'border-white/15 bg-white/10 text-gray-300 hover:border-white/35 hover:bg-white/15 hover:text-white'"
           >
-            <span class="text-base">{{ r.flag }}</span>
+            <img :src="`https://flagcdn.com/20x15/${r.code.toLowerCase()}.png`" :alt="r.name" class="w-5 rounded-sm" />
             <span>{{ r.name }}</span>
             <span v-if="regionCountMap[r.code]" class="text-[11px] opacity-60">({{ regionCountMap[r.code]?.toLocaleString() }})</span>
           </button>
@@ -104,8 +104,8 @@
             <p class="text-2xl sm:text-3xl font-bold text-gray-900 tabular-nums group-hover:text-orange-500 transition-colors">
               {{ animatedCount(r.count) }}
             </p>
-            <p class="text-xs text-gray-500 mt-1.5 group-hover:text-gray-700 transition-colors flex items-center justify-center gap-1">
-              <span>{{ regionEmoji(r.code) }}</span>
+            <p class="text-xs text-gray-500 mt-1.5 group-hover:text-gray-700 transition-colors flex items-center justify-center gap-1.5">
+              <img :src="`https://flagcdn.com/20x15/${r.code.toLowerCase()}.png`" :alt="r.name" class="w-4 rounded-sm" />
               {{ r.name }}
             </p>
           </div>
@@ -138,7 +138,9 @@
 
         <!-- Prompt — no region selected yet -->
         <div v-if="!localSelectedCode" class="py-16 flex flex-col items-center justify-center gap-4 text-center">
-          <div class="w-16 h-16 rounded-2xl bg-orange-50 border-2 border-orange-100 flex items-center justify-center text-3xl">🌍</div>
+          <div class="w-16 h-16 rounded-2xl bg-orange-50 border-2 border-orange-100 flex items-center justify-center">
+            <Icon name="lucide:globe" class="w-8 h-8 text-orange-400" />
+          </div>
           <p class="text-gray-700 font-medium">Choisissez votre région</p>
           <p class="text-sm text-gray-400 max-w-xs">Sélectionnez un pays ci-dessus pour afficher les dernières annonces disponibles.</p>
         </div>
@@ -195,7 +197,7 @@
             <div v-if="i < 2" class="hidden sm:block absolute top-7 left-[calc(50%+2.5rem)] right-[-calc(50%-2.5rem)] h-px bg-gray-200 z-0" />
 
             <div class="relative z-10 w-14 h-14 mx-auto rounded-2xl bg-orange-50 border-2 border-orange-100 flex items-center justify-center group-hover:bg-orange-100 group-hover:border-orange-300 transition-all duration-300">
-              <span class="text-2xl">{{ step.icon }}</span>
+              <Icon :name="step.icon" class="w-7 h-7 text-orange-500" />
             </div>
             <div class="mt-3 w-6 h-6 mx-auto rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center">
               {{ i + 1 }}
@@ -222,7 +224,7 @@
             @click="switchRegionAndSearch(r.code)"
             class="group relative overflow-hidden rounded-2xl border-2 border-gray-100 bg-white p-6 text-left hover:border-orange-200 hover:shadow-md transition-all duration-300"
           >
-            <div class="text-4xl mb-3">{{ r.flag }}</div>
+            <img :src="`https://flagcdn.com/40x30/${r.code.toLowerCase()}.png`" :alt="r.name" class="w-10 h-auto mb-3 rounded" />
             <h3 class="font-bold text-gray-900 group-hover:text-orange-500 transition-colors">{{ r.name }}</h3>
             <p class="text-xs text-gray-500 mt-1">{{ r.currency }}</p>
             <div v-if="regionCountMap[r.code]" class="mt-3 text-sm font-semibold text-orange-500">
@@ -295,26 +297,23 @@ const regionCountMap = computed(() => {
 })
 
 const quickRegions = [
-  { code: 'FR', name: 'France', flag: '🇫🇷' },
-  { code: 'TN', name: 'Tunisia', flag: '🇹🇳' },
-  { code: 'EG', name: 'Egypt', flag: '🇪🇬' },
-  { code: 'CA', name: 'Canada', flag: '🇨🇦' },
+  { code: 'FR', name: 'France' },
+  { code: 'TN', name: 'Tunisia' },
+  { code: 'EG', name: 'Egypt' },
+  { code: 'CA', name: 'Canada' },
 ]
 
 const countryCards = [
-  { code: 'FR', name: 'France', flag: '🇫🇷', currency: 'EUR — Euro' },
-  { code: 'TN', name: 'Tunisia', flag: '🇹🇳', currency: 'TND — Dinar' },
-  { code: 'EG', name: 'Egypt', flag: '🇪🇬', currency: 'EGP — Pound' },
-  { code: 'CA', name: 'Canada', flag: '🇨🇦', currency: 'CAD — Dollar' },
+  { code: 'FR', name: 'France', currency: 'EUR — Euro' },
+  { code: 'TN', name: 'Tunisia', currency: 'TND — Dinar' },
+  { code: 'EG', name: 'Egypt', currency: 'EGP — Pound' },
+  { code: 'CA', name: 'Canada', currency: 'CAD — Dollar' },
 ]
 
-const emojiMap: Record<string, string> = { FR: '🇫🇷', TN: '🇹🇳', EG: '🇪🇬', CA: '🇨🇦' }
-function regionEmoji(code: string) { return emojiMap[code] || '' }
-
 const steps = [
-  { icon: '🔍', title: 'Search', desc: 'Filter by city, price, type, and more across 4 countries.' },
-  { icon: '🏠', title: 'Compare', desc: 'View detailed listings with photos, features, and pricing.' },
-  { icon: '📞', title: 'Connect', desc: 'Contact landlords or agents directly from the listing page.' },
+  { icon: 'lucide:search', title: 'Search', desc: 'Filter by city, price, type, and more across 4 countries.' },
+  { icon: 'lucide:home', title: 'Compare', desc: 'View detailed listings with photos, features, and pricing.' },
+  { icon: 'lucide:phone', title: 'Connect', desc: 'Contact landlords or agents directly from the listing page.' },
 ]
 
 function animatedCount(count: number | undefined) {

@@ -4,7 +4,7 @@
       @click="open = !open"
       class="flex items-center gap-2 text-sm px-3 py-1.5 rounded-lg border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-all duration-200"
     >
-      <span class="text-base leading-none">{{ current.flag }}</span>
+      <img :src="`https://flagcdn.com/20x15/${current.cc}.png`" :alt="current.label" class="w-5 rounded-sm" />
       <span class="text-gray-700">{{ current.label }}</span>
       <svg
         class="w-3.5 h-3.5 text-gray-400 transition-transform duration-200"
@@ -34,7 +34,7 @@
               ? 'text-orange-600 bg-orange-50 font-medium'
               : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
           >
-            <span class="text-base leading-none">{{ lang.flag }}</span>
+            <img :src="`https://flagcdn.com/20x15/${lang.cc}.png`" :alt="lang.label" class="w-5 rounded-sm" />
             <span>{{ lang.label }}</span>
           </button>
         </div>
@@ -45,10 +45,10 @@
 
 <script setup lang="ts">
 const languages = [
-  { code: 'fr', flag: '🇫🇷', label: 'Français' },
-  { code: 'en', flag: '🇬🇧', label: 'English' },
-  { code: 'ar', flag: '🌍', label: 'العربية' },
-  { code: 'es', flag: '🇪🇸', label: 'Español' },
+  { code: 'fr', cc: 'fr', label: 'Français' },
+  { code: 'en', cc: 'gb', label: 'English' },
+  { code: 'ar', cc: 'sa', label: 'العربية' },
+  { code: 'es', cc: 'es', label: 'Español' },
 ]
 
 const selectedCode = ref('fr')
