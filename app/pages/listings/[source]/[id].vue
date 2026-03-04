@@ -196,19 +196,14 @@
               <p v-if="l.agent_phone" class="text-xs text-gray-500">{{ l.agent_phone }}</p>
             </div>
 
-            <button class="mt-5 w-full py-3 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 active:scale-[0.98] transition-all">
-              Contact agent
-            </button>
-            <button class="mt-2 w-full py-3 border border-gray-200 text-gray-800 text-sm font-medium rounded-xl hover:bg-gray-50 transition-all">
-              Schedule visit
-            </button>
             <a
               v-if="l.url"
               :href="l.url"
               target="_blank"
-              class="mt-3 block text-center text-xs text-gray-400 hover:text-gray-600 transition-colors"
+              class="mt-5 w-full py-3 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
             >
-              View original listing ↗
+              View original listing
+              <Icon name="lucide:external-link" class="w-4 h-4" />
             </a>
           </div>
 
