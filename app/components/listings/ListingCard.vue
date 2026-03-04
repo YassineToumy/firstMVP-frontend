@@ -36,12 +36,20 @@
         {{ listing.photos_count }}
       </span>
 
-      <!-- Favourite button (visual only) -->
+      <!-- Favourite button -->
       <button
-        class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-white"
-        @click.prevent
+        v-if="isLoggedIn"
+        class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-white shadow-sm"
+        :class="{ 'opacity-100': isFav }"
+        @click.prevent="toggleFav"
+        :title="isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'"
       >
-        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          class="w-4 h-4 transition-colors"
+          :class="isFav ? 'text-orange-500 fill-orange-500' : 'text-gray-500 fill-none'"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
         </svg>
       </button>
@@ -99,8 +107,17 @@
 
 <script setup lang="ts">
 import type { Listing } from '~/composables/useListings'
+import { useFavoritesStore } from '~/stores/favorites'
 
-defineProps<{ listing: Listing }>()
+const props = defineProps<{ listing: Listing }>()
+const { isLoggedIn } = useAuth()
+const favorites = useFavoritesStore()
+
+const isFav = computed(() => favorites.isFavorite(props.listing.source, props.listing.source_id))
+
+function toggleFav() {
+  favorites.toggle(props.listing)
+}
 
 function formatPrice(price: number, currency: string): string {
   const locales: Record<string, string> = { EUR: 'fr-FR', TND: 'fr-TN', EGP: 'en-EG', CAD: 'en-CA' }

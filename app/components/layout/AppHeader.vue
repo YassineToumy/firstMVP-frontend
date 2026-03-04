@@ -21,15 +21,58 @@
       <!-- Right: Auth -->
       <div class="flex items-center gap-2.5">
         <template v-if="isLoggedIn">
-          <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-orange-50">
-            <div class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center">
-              <span class="text-[10px] font-bold text-white">{{ user?.name?.[0]?.toUpperCase() }}</span>
-            </div>
-            <span class="text-sm text-gray-700">{{ user?.name }}</span>
+          <!-- Account dropdown -->
+          <div class="relative hidden sm:block" ref="accountRef">
+            <button
+              @click="accountOpen = !accountOpen"
+              class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-orange-50 hover:bg-orange-100 transition-all"
+            >
+              <div class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center">
+                <span class="text-[10px] font-bold text-white">{{ user?.name?.[0]?.toUpperCase() }}</span>
+              </div>
+              <span class="text-sm text-gray-700">{{ user?.name }}</span>
+              <Icon name="lucide:chevron-down" class="w-3.5 h-3.5 text-gray-400 transition-transform" :class="{ 'rotate-180': accountOpen }" />
+            </button>
+
+            <Transition
+              enter-active-class="transition duration-150 ease-out"
+              enter-from-class="opacity-0 scale-95 -translate-y-1"
+              enter-to-class="opacity-100 scale-100 translate-y-0"
+              leave-active-class="transition duration-100 ease-in"
+              leave-from-class="opacity-100 scale-100 translate-y-0"
+              leave-to-class="opacity-0 scale-95 -translate-y-1"
+            >
+              <div v-if="accountOpen" class="absolute right-0 top-full mt-2 w-52 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden z-50">
+                <div class="px-4 py-3 border-b border-gray-100">
+                  <p class="text-xs text-gray-500 truncate">{{ user?.email }}</p>
+                </div>
+                <div class="p-1">
+                  <NuxtLink
+                    v-for="item in accountMenu"
+                    :key="item.to"
+                    :to="item.to"
+                    @click="accountOpen = false"
+                    class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all"
+                  >
+                    <Icon :name="item.icon" class="w-4 h-4 shrink-0" />
+                    {{ item.label }}
+                    <span v-if="item.badge" class="ml-auto text-xs font-semibold bg-orange-100 text-orange-600 px-1.5 py-0.5 rounded-full">
+                      {{ item.badge }}
+                    </span>
+                  </NuxtLink>
+                </div>
+                <div class="border-t border-gray-100 p-1">
+                  <button
+                    @click="doLogout"
+                    class="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-500 rounded-lg hover:bg-red-50 transition-all"
+                  >
+                    <Icon name="lucide:log-out" class="w-4 h-4" />
+                    Se déconnecter
+                  </button>
+                </div>
+              </div>
+            </Transition>
           </div>
-          <button @click="logout" class="text-sm text-gray-500 hover:text-gray-900 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-all">
-            Logout
-          </button>
         </template>
         <template v-else>
           <NuxtLink to="/login" class="text-sm text-gray-600 hover:text-gray-900 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-all">
@@ -64,7 +107,20 @@
         <NuxtLink to="/conseils" class="block px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50" @click="mobileOpen = false">Conseils</NuxtLink>
         <NuxtLink to="/contact" class="block px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50" @click="mobileOpen = false">Contact</NuxtLink>
         <NuxtLink to="/about" class="block px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50" @click="mobileOpen = false">About us</NuxtLink>
-        <template v-if="!isLoggedIn">
+        <template v-if="isLoggedIn">
+          <div class="pt-2 border-t border-gray-100 space-y-1">
+            <NuxtLink v-for="item in accountMenu" :key="item.to" :to="item.to" @click="mobileOpen = false"
+              class="flex items-center gap-2.5 px-3 py-2.5 text-sm text-gray-700 rounded-lg hover:bg-gray-50">
+              <Icon :name="item.icon" class="w-4 h-4 shrink-0" />
+              {{ item.label }}
+            </NuxtLink>
+            <button @click="doLogout" class="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-red-500 rounded-lg hover:bg-red-50">
+              <Icon name="lucide:log-out" class="w-4 h-4" />
+              Se déconnecter
+            </button>
+          </div>
+        </template>
+        <template v-else>
           <div class="pt-2 border-t border-gray-100">
             <NuxtLink to="/register" class="block w-full text-center px-3 py-2.5 bg-orange-500 text-white text-sm font-medium rounded-lg hover:bg-orange-600" @click="mobileOpen = false">
               Get Started
@@ -77,8 +133,41 @@
 </template>
 
 <script setup lang="ts">
+import { useFavoritesStore } from '~/stores/favorites'
+
 const { user, isLoggedIn, logout } = useAuth()
+const favorites = useFavoritesStore()
+const router = useRouter()
 const mobileOpen = ref(false)
+const accountOpen = ref(false)
+const accountRef = ref<HTMLElement>()
+
+const accountMenu = computed(() => [
+  {
+    to: '/account/favorites',
+    icon: 'lucide:heart',
+    label: 'Mes favoris',
+    badge: favorites.count > 0 ? favorites.count : undefined,
+  },
+  { to: '/account/password', icon: 'lucide:lock', label: 'Mot de passe' },
+  { to: '/account/social', icon: 'lucide:share-2', label: 'Réseaux sociaux' },
+  { to: '/account/settings', icon: 'lucide:settings', label: 'Paramètres' },
+])
+
+async function doLogout() {
+  accountOpen.value = false
+  mobileOpen.value = false
+  await logout()
+  router.push('/')
+}
+
+onMounted(() => {
+  document.addEventListener('click', (e: MouseEvent) => {
+    if (accountRef.value && !accountRef.value.contains(e.target as Node)) {
+      accountOpen.value = false
+    }
+  })
+})
 </script>
 
 <style scoped>

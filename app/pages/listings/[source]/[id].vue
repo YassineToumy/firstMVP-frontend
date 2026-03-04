@@ -205,6 +205,23 @@
               View original listing
               <Icon name="lucide:external-link" class="w-4 h-4" />
             </a>
+
+            <!-- Favorite button (logged in only) -->
+            <button
+              v-if="isLoggedIn && l"
+              @click="toggleFav"
+              :class="isFav ? 'border-orange-400 text-orange-500 bg-orange-50' : 'border-gray-200 text-gray-500 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-500'"
+              class="mt-3 w-full py-2.5 border rounded-xl text-sm font-medium flex items-center justify-center gap-2 transition-all"
+            >
+              <svg
+                class="w-4 h-4 transition-colors"
+                :class="isFav ? 'fill-orange-500 text-orange-500' : 'fill-none'"
+                stroke="currentColor" viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              {{ isFav ? 'Saved to favorites' : 'Save to favorites' }}
+            </button>
           </div>
 
           <!-- Property details -->
@@ -272,8 +289,21 @@
 </template>
 
 <script setup lang="ts">
+import { useFavoritesStore } from '~/stores/favorites'
+
 const route = useRoute()
 const { fetchListing } = useListings()
+const { isLoggedIn } = useAuth()
+const favorites = useFavoritesStore()
+
+const isFav = computed(() => l.value
+  ? favorites.isFavorite(source, id)
+  : false,
+)
+
+function toggleFav() {
+  if (l.value) favorites.toggle(l.value as any)
+}
 
 const source = route.params.source as string
 const id = route.params.id as string
