@@ -5,8 +5,8 @@
 
       <main class="flex-1 min-w-0">
         <div class="mb-6">
-          <h1 class="text-2xl font-bold text-gray-900">Paramètres</h1>
-          <p class="text-sm text-gray-500 mt-1">Personnalisez votre expérience RentGlobe.</p>
+          <h1 class="text-2xl font-bold text-gray-900">{{ $t('settings.title') }}</h1>
+          <p class="text-sm text-gray-500 mt-1">{{ $t('settings.subtitle') }}</p>
         </div>
 
         <div class="space-y-4 max-w-lg">
@@ -14,13 +14,13 @@
           <div class="bg-white rounded-2xl border border-gray-100 p-6">
             <h2 class="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
               <Icon name="lucide:palette" class="w-4 h-4 text-gray-400" />
-              Apparence
+              {{ $t('settings.appearance') }}
             </h2>
 
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-sm font-medium text-gray-900">Mode sombre</p>
-                <p class="text-xs text-gray-400 mt-0.5">Basculer vers un thème sombre</p>
+                <p class="text-sm font-medium text-gray-900">{{ $t('settings.darkMode') }}</p>
+                <p class="text-xs text-gray-400 mt-0.5">{{ $t('settings.darkModeDesc') }}</p>
               </div>
               <!-- Toggle switch -->
               <button
@@ -40,15 +40,15 @@
           <div class="bg-white rounded-2xl border border-gray-100 p-6">
             <h2 class="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
               <Icon name="lucide:globe" class="w-4 h-4 text-gray-400" />
-              Langue
+              {{ $t('settings.language') }}
             </h2>
 
             <div class="grid grid-cols-2 gap-2">
               <button
                 v-for="lang in languages"
                 :key="lang.code"
-                @click="selectedLang = lang.code"
-                :class="selectedLang === lang.code
+                @click="setLocale(lang.code as 'fr' | 'en' | 'ar' | 'es')"
+                :class="locale === lang.code
                   ? 'border-orange-400 bg-orange-50 text-orange-600'
                   : 'border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50'"
                 class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl border text-sm font-medium transition-all"
@@ -57,21 +57,20 @@
                 {{ lang.label }}
               </button>
             </div>
-            <p class="text-xs text-gray-400 mt-3">Le changement de langue complet sera disponible prochainement.</p>
           </div>
 
           <!-- Notifications -->
           <div class="bg-white rounded-2xl border border-gray-100 p-6">
             <h2 class="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
               <Icon name="lucide:bell" class="w-4 h-4 text-gray-400" />
-              Notifications
+              {{ $t('settings.notifications') }}
             </h2>
 
             <div class="space-y-4">
               <div v-for="notif in notifications" :key="notif.key" class="flex items-center justify-between">
                 <div>
-                  <p class="text-sm font-medium text-gray-900">{{ notif.label }}</p>
-                  <p class="text-xs text-gray-400 mt-0.5">{{ notif.desc }}</p>
+                  <p class="text-sm font-medium text-gray-900">{{ $t(notif.labelKey) }}</p>
+                  <p class="text-xs text-gray-400 mt-0.5">{{ $t(notif.descKey) }}</p>
                 </div>
                 <button
                   @click="notif.value = !notif.value"
@@ -91,11 +90,11 @@
           <div class="bg-white rounded-2xl border border-red-100 p-6">
             <h2 class="text-sm font-semibold text-red-600 mb-4 flex items-center gap-2">
               <Icon name="lucide:alert-triangle" class="w-4 h-4" />
-              Zone dangereuse
+              {{ $t('settings.dangerZone') }}
             </h2>
-            <p class="text-sm text-gray-500 mb-4">La suppression de compte est définitive et irréversible.</p>
+            <p class="text-sm text-gray-500 mb-4">{{ $t('settings.dangerZoneDesc') }}</p>
             <button class="px-4 py-2 text-sm text-red-600 border border-red-200 rounded-xl hover:bg-red-50 transition-colors">
-              Supprimer mon compte
+              {{ $t('settings.deleteAccount') }}
             </button>
           </div>
         </div>
@@ -110,7 +109,7 @@ import { useDarkMode } from '~/composables/useDarkMode'
 definePageMeta({ middleware: 'auth' })
 
 const darkMode = useDarkMode()
-const selectedLang = ref('fr')
+const { locale, setLocale } = useI18n()
 
 const languages = [
   { code: 'fr', cc: 'fr', label: 'Français' },
@@ -120,8 +119,8 @@ const languages = [
 ]
 
 const notifications = reactive([
-  { key: 'new_listings', label: 'Nouvelles annonces', desc: 'Soyez alerté des nouvelles annonces correspondant à vos critères.', value: true },
-  { key: 'price_drops', label: 'Baisses de prix', desc: 'Recevez une notification quand le prix d\'une annonce baisse.', value: false },
-  { key: 'newsletter', label: 'Newsletter', desc: 'Actualités et conseils de RentGlobe par email.', value: true },
+  { key: 'new_listings', labelKey: 'settings.notif1Label', descKey: 'settings.notif1Desc', value: true },
+  { key: 'price_drops', labelKey: 'settings.notif2Label', descKey: 'settings.notif2Desc', value: false },
+  { key: 'newsletter', labelKey: 'settings.notif3Label', descKey: 'settings.notif3Desc', value: true },
 ])
 </script>

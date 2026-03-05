@@ -8,17 +8,17 @@
         </svg>
       </div>
 
-      <h1 class="text-2xl font-bold text-gray-900 text-center">Welcome back</h1>
-      <p class="text-sm text-gray-500 text-center mt-1">Sign in to your RentGlobe account</p>
+      <h1 class="text-2xl font-bold text-gray-900 text-center">{{ $t('auth.loginTitle') }}</h1>
+      <p class="text-sm text-gray-500 text-center mt-1">{{ $t('auth.loginSubtitle') }}</p>
 
       <form @submit.prevent="handleLogin" class="mt-8 space-y-4">
         <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">Email address</label>
+          <label class="block text-xs font-medium text-gray-600 mb-1.5">{{ $t('auth.emailLabel') }}</label>
           <input v-model="email" type="email" required autocomplete="email"
             class="auth-input" placeholder="you@example.com" />
         </div>
         <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">Password</label>
+          <label class="block text-xs font-medium text-gray-600 mb-1.5">{{ $t('auth.passwordLabel') }}</label>
           <input v-model="password" type="password" required autocomplete="current-password"
             class="auth-input" placeholder="••••••••" />
         </div>
@@ -30,13 +30,13 @@
 
         <button type="submit" :disabled="loading"
           class="w-full py-3 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-          {{ loading ? 'Signing in...' : 'Sign In' }}
+          {{ loading ? $t('auth.signingIn') : $t('auth.signIn') }}
         </button>
       </form>
 
       <p class="text-sm text-gray-500 text-center mt-8">
-        Don't have an account?
-        <NuxtLink to="/register" class="text-orange-500 font-semibold hover:text-orange-600 transition-colors">Create one</NuxtLink>
+        {{ $t('auth.noAccount') }}
+        <NuxtLink to="/register" class="text-orange-500 font-semibold hover:text-orange-600 transition-colors">{{ $t('auth.createOne') }}</NuxtLink>
       </p>
     </div>
   </div>
@@ -45,6 +45,7 @@
 <script setup lang="ts">
 import { useAuth } from '~/composables/useAuth'
 
+const { t } = useI18n()
 const { login } = useAuth()
 const router = useRouter()
 
@@ -60,7 +61,7 @@ async function handleLogin() {
     await login(email.value, password.value)
     router.push('/')
   } catch (e: any) {
-    error.value = e?.data?.message || 'Invalid credentials. Please try again.'
+    error.value = e?.data?.message || t('auth.invalidCredentials')
   } finally {
     loading.value = false
   }

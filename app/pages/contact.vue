@@ -5,13 +5,13 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         <div class="max-w-xl">
           <span class="inline-block text-xs font-semibold uppercase tracking-widest text-orange-100 mb-3">
-            Contact
+            {{ $t('contact.badge') }}
           </span>
           <h1 class="text-3xl sm:text-4xl font-bold leading-tight">
-            We're here to help
+            {{ $t('contact.title') }}
           </h1>
           <p class="mt-4 text-orange-100 text-sm sm:text-base leading-relaxed">
-            Have a question or need assistance? Reach out to the RentGlobe team — we usually respond within 24 hours.
+            {{ $t('contact.subtitle') }}
           </p>
         </div>
       </div>
@@ -24,16 +24,16 @@
 
           <!-- Info cards -->
           <div class="lg:col-span-2 space-y-4">
-            <h2 class="text-lg font-bold text-gray-900 mb-6">Get in touch</h2>
+            <h2 class="text-lg font-bold text-gray-900 mb-6">{{ $t('contact.getInTouch') }}</h2>
 
-            <div v-for="item in contactInfo" :key="item.label" class="flex items-start gap-4 bg-white border border-gray-100 rounded-2xl p-5 hover:border-orange-200 hover:shadow-sm transition-all duration-200">
+            <div v-for="item in contactInfo" :key="item.labelKey" class="flex items-start gap-4 bg-white border border-gray-100 rounded-2xl p-5 hover:border-orange-200 hover:shadow-sm transition-all duration-200">
               <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center flex-shrink-0">
                 <component :is="item.icon" class="w-5 h-5 text-orange-500" />
               </div>
               <div>
-                <p class="text-xs font-medium text-gray-400 uppercase tracking-wide mb-0.5">{{ item.label }}</p>
+                <p class="text-xs font-medium text-gray-400 uppercase tracking-wide mb-0.5">{{ $t(item.labelKey) }}</p>
                 <p class="text-sm font-semibold text-gray-900">{{ item.value }}</p>
-                <p v-if="item.sub" class="text-xs text-gray-500 mt-0.5">{{ item.sub }}</p>
+                <p v-if="item.subKey" class="text-xs text-gray-500 mt-0.5">{{ $t(item.subKey) }}</p>
               </div>
             </div>
 
@@ -51,61 +51,43 @@
 
           <!-- Contact form -->
           <div class="lg:col-span-3 bg-white border border-gray-100 rounded-2xl p-7 sm:p-9">
-            <h2 class="text-lg font-bold text-gray-900 mb-6">Send us a message</h2>
+            <h2 class="text-lg font-bold text-gray-900 mb-6">{{ $t('contact.sendMessage') }}</h2>
 
             <form @submit.prevent="submitForm" class="space-y-5">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-xs font-medium text-gray-700 mb-1.5">First name</label>
-                  <input
-                    v-model="form.firstName"
-                    type="text"
-                    placeholder="John"
-                    required
-                    class="contact-input"
-                  />
+                  <label class="block text-xs font-medium text-gray-700 mb-1.5">{{ $t('contact.firstName') }}</label>
+                  <input v-model="form.firstName" type="text" placeholder="John" required class="contact-input" />
                 </div>
                 <div>
-                  <label class="block text-xs font-medium text-gray-700 mb-1.5">Last name</label>
-                  <input
-                    v-model="form.lastName"
-                    type="text"
-                    placeholder="Doe"
-                    required
-                    class="contact-input"
-                  />
+                  <label class="block text-xs font-medium text-gray-700 mb-1.5">{{ $t('contact.lastName') }}</label>
+                  <input v-model="form.lastName" type="text" placeholder="Doe" required class="contact-input" />
                 </div>
               </div>
 
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1.5">Email address</label>
-                <input
-                  v-model="form.email"
-                  type="email"
-                  placeholder="john@example.com"
-                  required
-                  class="contact-input"
-                />
+                <label class="block text-xs font-medium text-gray-700 mb-1.5">{{ $t('contact.email') }}</label>
+                <input v-model="form.email" type="email" placeholder="john@example.com" required class="contact-input" />
               </div>
 
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1.5">Subject</label>
+                <label class="block text-xs font-medium text-gray-700 mb-1.5">{{ $t('contact.subject') }}</label>
                 <select v-model="form.subject" class="contact-input">
-                  <option value="">Select a subject…</option>
-                  <option value="listing">Question about a listing</option>
-                  <option value="account">Account / Login issue</option>
-                  <option value="agency">Agency partnership</option>
-                  <option value="bug">Report a bug</option>
-                  <option value="other">Other</option>
+                  <option value="">{{ $t('contact.selectSubject') }}</option>
+                  <option value="listing">{{ $t('contact.subjectListing') }}</option>
+                  <option value="account">{{ $t('contact.subjectAccount') }}</option>
+                  <option value="agency">{{ $t('contact.subjectAgency') }}</option>
+                  <option value="bug">{{ $t('contact.subjectBug') }}</option>
+                  <option value="other">{{ $t('contact.subjectOther') }}</option>
                 </select>
               </div>
 
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1.5">Message</label>
+                <label class="block text-xs font-medium text-gray-700 mb-1.5">{{ $t('contact.message') }}</label>
                 <textarea
                   v-model="form.message"
                   rows="5"
-                  placeholder="Describe your question or request in detail…"
+                  :placeholder="$t('contact.messagePlaceholder')"
                   required
                   class="contact-input resize-none"
                 />
@@ -116,13 +98,13 @@
                 <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
-                Your message has been sent! We'll get back to you within 24 hours.
+                {{ $t('contact.successMessage') }}
               </div>
               <div v-if="error" class="flex items-center gap-2 text-sm text-red-700 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
                 <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Something went wrong. Please try again or email us directly.
+                {{ $t('contact.errorMessage') }}
               </div>
 
               <button
@@ -134,7 +116,7 @@
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                 </svg>
-                {{ sending ? 'Sending…' : 'Send message' }}
+                {{ sending ? $t('contact.sending') : $t('contact.send') }}
               </button>
             </form>
           </div>
@@ -165,19 +147,12 @@ const MapPinIcon = defineComponent({
 })
 
 const contactInfo = [
-  { label: 'Phone', value: '+33 1 23 45 67 89', sub: 'Mon – Fri, 9 am – 6 pm (CET)', icon: PhoneIcon },
-  { label: 'Email', value: 'contact@rentglobe.com', sub: 'We reply within 24 hours', icon: MailIcon },
-  { label: 'Office', value: '12 Rue de Rivoli, Paris 75001', sub: 'France', icon: MapPinIcon },
+  { labelKey: 'contact.infoPhone', value: '+33 1 23 45 67 89', subKey: 'contact.infoPhoneSub', icon: PhoneIcon },
+  { labelKey: 'contact.infoEmail', value: 'contact@rentglobe.com', subKey: 'contact.infoEmailSub', icon: MailIcon },
+  { labelKey: 'contact.infoOffice', value: '12 Rue de Rivoli, Paris 75001', subKey: 'contact.infoOfficeSub', icon: MapPinIcon },
 ]
 
-const form = reactive({
-  firstName: '',
-  lastName: '',
-  email: '',
-  subject: '',
-  message: '',
-})
-
+const form = reactive({ firstName: '', lastName: '', email: '', subject: '', message: '' })
 const sending = ref(false)
 const sent = ref(false)
 const error = ref(false)
@@ -186,7 +161,6 @@ async function submitForm() {
   sending.value = true
   sent.value = false
   error.value = false
-  // Simulate API call — replace with real endpoint
   await new Promise(r => setTimeout(r, 1200))
   sending.value = false
   sent.value = true

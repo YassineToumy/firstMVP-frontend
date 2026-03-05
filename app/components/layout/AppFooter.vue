@@ -5,17 +5,17 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div>
-            <h3 class="text-white font-semibold text-base">Stay updated on new listings</h3>
-            <p class="text-sm text-gray-500 mt-1">Get notified when new properties match your criteria.</p>
+            <h3 class="text-white font-semibold text-base">{{ $t('footer.newsletterTitle') }}</h3>
+            <p class="text-sm text-gray-500 mt-1">{{ $t('footer.newsletterDesc') }}</p>
           </div>
           <div class="flex gap-2 w-full sm:w-auto">
             <input
               type="email"
-              placeholder="Enter your email address"
+              :placeholder="$t('footer.newsletterPlaceholder')"
               class="flex-1 sm:w-64 px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-orange-500/50"
             />
             <button class="px-3.4 py-2.5 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 transition-colors whitespace-nowrap">
-              Subscribe
+              {{ $t('footer.subscribe') }}
             </button>
           </div>
         </div>
@@ -34,8 +34,7 @@
             <span class="text-lg font-bold text-white">RentGlobe</span>
           </div>
           <p class="mt-4 text-sm text-gray-500 max-w-xs leading-relaxed">
-            Your global rental platform — aggregating thousands of verified listings from France,
-            Tunisia, Egypt &amp; Canada. Find your next home, all in one place.
+            {{ $t('footer.tagline') }}
           </p>
 
           <!-- Social links -->
@@ -65,18 +64,18 @@
 
         <!-- Platform -->
         <div>
-          <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Platform</h4>
+          <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">{{ $t('footer.platform') }}</h4>
           <div class="space-y-3">
-            <NuxtLink to="/" class="block text-sm hover:text-white transition-colors">Home</NuxtLink>
-            <NuxtLink to="/listings" class="block text-sm hover:text-white transition-colors">Browse Listings</NuxtLink>
-            <NuxtLink to="/register" class="block text-sm hover:text-white transition-colors">Create Account</NuxtLink>
-            <NuxtLink to="/login" class="block text-sm hover:text-white transition-colors">Sign In</NuxtLink>
+            <NuxtLink to="/" class="block text-sm hover:text-white transition-colors">{{ $t('footer.home') }}</NuxtLink>
+            <NuxtLink to="/listings" class="block text-sm hover:text-white transition-colors">{{ $t('footer.browseListings') }}</NuxtLink>
+            <NuxtLink to="/register" class="block text-sm hover:text-white transition-colors">{{ $t('footer.createAccount') }}</NuxtLink>
+            <NuxtLink to="/login" class="block text-sm hover:text-white transition-colors">{{ $t('footer.signIn') }}</NuxtLink>
           </div>
         </div>
 
         <!-- Regions -->
         <div>
-          <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Explore Regions</h4>
+          <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">{{ $t('footer.exploreRegions') }}</h4>
           <div class="space-y-3 text-sm">
             <button @click="goToRegion('FR')" class="flex items-center gap-2 hover:text-white transition-colors w-full text-left">
               <img src="https://flagcdn.com/20x15/fr.png" alt="France" class="w-5 rounded-sm" /> France
@@ -95,12 +94,12 @@
 
         <!-- Company -->
         <div>
-          <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Company</h4>
+          <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">{{ $t('footer.company') }}</h4>
           <div class="space-y-3">
-            <NuxtLink to="/about" class="block text-sm hover:text-white transition-colors">About RentGlobe</NuxtLink>
-            <NuxtLink to="/conseils" class="block text-sm hover:text-white transition-colors">How it works</NuxtLink>
-            <NuxtLink to="/contact" class="block text-sm hover:text-white transition-colors">Contact us</NuxtLink>
-            <NuxtLink to="/account/settings" class="block text-sm hover:text-white transition-colors">Settings</NuxtLink>
+            <NuxtLink to="/about" class="block text-sm hover:text-white transition-colors">{{ $t('footer.aboutRentGlobe') }}</NuxtLink>
+            <NuxtLink to="/conseils" class="block text-sm hover:text-white transition-colors">{{ $t('footer.howItWorks') }}</NuxtLink>
+            <NuxtLink to="/contact" class="block text-sm hover:text-white transition-colors">{{ $t('footer.contactUs') }}</NuxtLink>
+            <NuxtLink to="/account/settings" class="block text-sm hover:text-white transition-colors">{{ $t('footer.settings') }}</NuxtLink>
           </div>
         </div>
       </div>
@@ -108,13 +107,13 @@
       <!-- Bottom bar -->
       <div class="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div class="flex items-center gap-2">
-          <span class="text-xs text-gray-600">&copy; {{ new Date().getFullYear() }} RentGlobe. All rights reserved.</span>
+          <span class="text-xs text-gray-600">&copy; {{ new Date().getFullYear() }} RentGlobe. {{ $t('footer.allRightsReserved') }}</span>
         </div>
         <div class="flex items-center gap-5 text-xs text-gray-600">
-          <NuxtLink to="/about" class="hover:text-gray-400 transition-colors">Privacy Policy</NuxtLink>
-          <NuxtLink to="/about" class="hover:text-gray-400 transition-colors">Terms of Service</NuxtLink>
-          <NuxtLink to="/about" class="hover:text-gray-400 transition-colors">Cookie Policy</NuxtLink>
-          <NuxtLink to="/" class="hover:text-gray-400 transition-colors">Sitemap</NuxtLink>
+          <NuxtLink to="/about" class="hover:text-gray-400 transition-colors">{{ $t('footer.privacy') }}</NuxtLink>
+          <NuxtLink to="/about" class="hover:text-gray-400 transition-colors">{{ $t('footer.terms') }}</NuxtLink>
+          <NuxtLink to="/about" class="hover:text-gray-400 transition-colors">{{ $t('footer.cookies') }}</NuxtLink>
+          <NuxtLink to="/" class="hover:text-gray-400 transition-colors">{{ $t('footer.sitemap') }}</NuxtLink>
         </div>
       </div>
     </div>

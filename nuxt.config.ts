@@ -8,8 +8,25 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@nuxt/icon',
+    '@nuxtjs/i18n',
   ],
 
+  i18n: {
+    locales: [
+      { code: 'fr', language: 'fr-FR', name: 'Français', dir: 'ltr', file: 'fr.json' },
+      { code: 'en', language: 'en-US', name: 'English', dir: 'ltr', file: 'en.json' },
+      { code: 'ar', language: 'ar-SA', name: 'العربية', dir: 'rtl', file: 'ar.json' },
+      { code: 'es', language: 'es-ES', name: 'Español', dir: 'ltr', file: 'es.json' },
+    ],
+    defaultLocale: 'fr',
+    langDir: 'locales',
+    strategy: 'no_prefix',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_locale',
+      redirectOn: 'root',
+    },
+  },
 
   css: ['~/assets/css/main.css'],
 

@@ -8,27 +8,27 @@
         </svg>
       </div>
 
-      <h1 class="text-2xl font-bold text-gray-900 text-center">Create account</h1>
-      <p class="text-sm text-gray-500 text-center mt-1">Start browsing rentals worldwide</p>
+      <h1 class="text-2xl font-bold text-gray-900 text-center">{{ $t('auth.registerTitle') }}</h1>
+      <p class="text-sm text-gray-500 text-center mt-1">{{ $t('auth.registerSubtitle') }}</p>
 
       <form @submit.prevent="handleRegister" class="mt-8 space-y-4">
         <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">Full name</label>
+          <label class="block text-xs font-medium text-gray-600 mb-1.5">{{ $t('auth.fullName') }}</label>
           <input v-model="name" type="text" required autocomplete="name"
             class="auth-input" placeholder="John Doe" />
         </div>
         <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">Email address</label>
+          <label class="block text-xs font-medium text-gray-600 mb-1.5">{{ $t('auth.emailLabel') }}</label>
           <input v-model="email" type="email" required autocomplete="email"
             class="auth-input" placeholder="you@example.com" />
         </div>
         <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">Password</label>
+          <label class="block text-xs font-medium text-gray-600 mb-1.5">{{ $t('auth.passwordLabel') }}</label>
           <input v-model="password" type="password" required autocomplete="new-password"
-            class="auth-input" placeholder="Min 8 characters" />
+            class="auth-input" :placeholder="$t('auth.passwordMin')" />
         </div>
         <div>
-          <label class="block text-xs font-medium text-gray-600 mb-1.5">Confirm password</label>
+          <label class="block text-xs font-medium text-gray-600 mb-1.5">{{ $t('auth.confirmPassword') }}</label>
           <input v-model="passwordConfirm" type="password" required autocomplete="new-password"
             class="auth-input" placeholder="••••••••" />
         </div>
@@ -39,13 +39,13 @@
 
         <button type="submit" :disabled="loading"
           class="w-full py-3 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-          {{ loading ? 'Creating account...' : 'Create Account' }}
+          {{ loading ? $t('auth.creatingAccount') : $t('auth.createAccount') }}
         </button>
       </form>
 
       <p class="text-sm text-gray-500 text-center mt-8">
-        Already have an account?
-        <NuxtLink to="/login" class="text-orange-500 font-semibold hover:text-orange-600 transition-colors">Sign In</NuxtLink>
+        {{ $t('auth.hasAccount') }}
+        <NuxtLink to="/login" class="text-orange-500 font-semibold hover:text-orange-600 transition-colors">{{ $t('auth.signIn') }}</NuxtLink>
       </p>
     </div>
   </div>
@@ -54,6 +54,7 @@
 <script setup lang="ts">
 import { useAuth } from '~/composables/useAuth'
 
+const { t } = useI18n()
 const { register } = useAuth()
 const router = useRouter()
 
@@ -67,7 +68,7 @@ const loading = ref(false)
 async function handleRegister() {
   error.value = ''
   if (password.value !== passwordConfirm.value) {
-    error.value = 'Passwords do not match'
+    error.value = t('auth.passwordsNoMatch')
     return
   }
   loading.value = true
@@ -75,7 +76,7 @@ async function handleRegister() {
     await register(name.value, email.value, password.value, passwordConfirm.value)
     router.push('/')
   } catch (e: any) {
-    error.value = e?.data?.message || 'Registration failed. Please try again.'
+    error.value = e?.data?.message || t('auth.registrationFailed')
   } finally {
     loading.value = false
   }

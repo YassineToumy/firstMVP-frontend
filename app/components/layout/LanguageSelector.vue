@@ -30,7 +30,7 @@
             :key="lang.code"
             @click="select(lang.code)"
             class="w-full text-left px-3 py-2.5 text-sm rounded-lg flex items-center gap-2.5 transition-all duration-150"
-            :class="lang.code === selectedCode
+            :class="lang.code === locale
               ? 'text-orange-600 bg-orange-50 font-medium'
               : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
           >
@@ -44,6 +44,8 @@
 </template>
 
 <script setup lang="ts">
+const { locale, setLocale } = useI18n()
+
 const languages = [
   { code: 'fr', cc: 'fr', label: 'Français' },
   { code: 'en', cc: 'gb', label: 'English' },
@@ -51,14 +53,13 @@ const languages = [
   { code: 'es', cc: 'es', label: 'Español' },
 ]
 
-const selectedCode = ref('fr')
 const open = ref(false)
 const wrapper = ref<HTMLElement>()
 
-const current = computed(() => languages.find(l => l.code === selectedCode.value) || languages[0])
+const current = computed(() => languages.find(l => l.code === locale.value) || languages[0])
 
 function select(code: string) {
-  selectedCode.value = code
+  setLocale(code as 'fr' | 'en' | 'ar' | 'es')
   open.value = false
 }
 

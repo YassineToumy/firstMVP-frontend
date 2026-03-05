@@ -12,6 +12,13 @@ const darkMode = useDarkMode()
 const favorites = useFavoritesStore()
 const region = useRegionStore()
 const { fetchUser } = useAuth()
+const { locale } = useI18n()
+
+// Apply RTL direction when Arabic is selected
+watch(locale, (newLocale) => {
+  document.documentElement.dir = newLocale === 'ar' ? 'rtl' : 'ltr'
+  document.documentElement.lang = newLocale
+}, { immediate: true })
 
 onMounted(() => {
   darkMode.init()

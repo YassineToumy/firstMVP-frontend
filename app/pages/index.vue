@@ -22,21 +22,19 @@
         <!-- Badge -->
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-400 mb-6 animate-fade-in-up">
           <span class="w-1.5 h-1.5 bg-orange-400 rounded-full animate-ping-soft" />
-          <span>{{ totalListings }} active listings across 4 countries</span>
+          <span>{{ $t('home.badge', { count: totalListings }) }}</span>
         </div>
 
         <!-- Headline -->
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight animate-fade-in-up animation-delay-100 max-w-3xl">
-          Find your perfect
-          <span class="text-orange-400">rental home</span>
-          abroad
+          {{ $t('home.headline') }}
+          <span class="text-orange-400">{{ $t('home.headlineHighlight') }}</span>
+          {{ $t('home.headlineEnd') }}
         </h1>
 
         <!-- Declaration paragraph -->
         <p class="mt-5 text-base text-gray-400 max-w-2xl animate-fade-in-up animation-delay-200 leading-relaxed">
-          RentGlobe aggregates thousands of verified rental listings from the top real estate platforms
-          across France, Tunisia, Egypt &amp; Canada — all in one place. Whether you're relocating,
-          studying abroad, or planning a long stay, find the right property at the right price.
+          {{ $t('home.subtext') }}
         </p>
 
         <!-- Search bar -->
@@ -49,30 +47,30 @@
               <input
                 v-model="searchCity"
                 type="text"
-                placeholder="Search by city, district, or keyword..."
+                :placeholder="$t('home.searchPlaceholder')"
                 class="w-full pl-10 pr-4 py-3.5 bg-transparent text-gray-900 text-sm placeholder-gray-400 focus:outline-none"
                 @keyup.enter="goSearch"
               />
             </div>
 
             <select v-model="searchType" class="px-4 py-3.5 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:border-orange-400 cursor-pointer bg-white">
-              <option value="">All types</option>
-              <option value="apartment">Apartment</option>
-              <option value="house">House</option>
+              <option value="">{{ $t('home.allTypes') }}</option>
+              <option value="apartment">{{ $t('home.apartment') }}</option>
+              <option value="house">{{ $t('home.house') }}</option>
             </select>
 
             <button
               @click="goSearch"
               class="px-8 py-3.5 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 active:scale-[0.98] transition-all duration-200"
             >
-              Search
+              {{ $t('home.search') }}
             </button>
           </div>
         </div>
 
         <!-- Region selector cards -->
         <div class="mt-5 flex flex-wrap gap-3 animate-fade-in-up animation-delay-400">
-          <p class="w-full text-xs text-gray-500 mb-1">Search in:</p>
+          <p class="w-full text-xs text-gray-500 mb-1">{{ $t('home.searchIn') }}</p>
           <button
             v-for="r in quickRegions"
             :key="r.code"
@@ -118,10 +116,10 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div class="flex items-end justify-between mb-8">
           <div>
-            <h2 class="text-2xl font-bold text-gray-900">Recent listings</h2>
+            <h2 class="text-2xl font-bold text-gray-900">{{ $t('home.recentListings') }}</h2>
             <p class="text-sm text-gray-500 mt-1">
-              <template v-if="localSelectedCode">Latest properties in {{ region.current.name }}</template>
-              <template v-else>Select a region above to see listings</template>
+              <template v-if="localSelectedCode">{{ $t('home.latestIn', { region: region.current.name }) }}</template>
+              <template v-else>{{ $t('home.selectRegion') }}</template>
             </p>
           </div>
           <NuxtLink
@@ -129,7 +127,7 @@
             to="/listings"
             class="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-orange-500 hover:text-orange-600 transition-colors group"
           >
-            View all
+            {{ $t('home.viewAll') }}
             <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
@@ -141,8 +139,8 @@
           <div class="w-16 h-16 rounded-2xl bg-orange-50 border-2 border-orange-100 flex items-center justify-center">
             <Icon name="lucide:globe" class="w-8 h-8 text-orange-400" />
           </div>
-          <p class="text-gray-700 font-medium">Choisissez votre région</p>
-          <p class="text-sm text-gray-400 max-w-xs">Sélectionnez un pays ci-dessus pour afficher les dernières annonces disponibles.</p>
+          <p class="text-gray-700 font-medium">{{ $t('home.chooseRegion') }}</p>
+          <p class="text-sm text-gray-400 max-w-xs">{{ $t('home.chooseRegionDesc') }}</p>
         </div>
 
         <!-- Loading skeleton -->
@@ -162,7 +160,7 @@
           <ListingsListingCard v-for="(l, i) in listings" :key="l.source_id" :listing="l" :style="{ animationDelay: `${i * 50}ms` }" class="animate-fade-in-up" />
         </div>
 
-        <p v-else class="text-center py-12 text-gray-500 text-sm">No listings found for this region.</p>
+        <p v-else class="text-center py-12 text-gray-500 text-sm">{{ $t('home.noListings') }}</p>
 
         <!-- View all button — visible on all sizes -->
         <div v-if="listings.length && localSelectedCode" class="mt-10 text-center">
@@ -170,7 +168,7 @@
             to="/listings"
             class="inline-flex items-center gap-2 px-8 py-3.5 bg-orange-500 text-white text-sm font-semibold rounded-xl hover:bg-orange-600 active:scale-[0.98] transition-all duration-200 shadow-sm shadow-orange-200"
           >
-            View all listings
+            {{ $t('home.viewAllListings') }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
@@ -184,10 +182,10 @@
     <section class="bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         <div class="text-center mb-12">
-          <span class="inline-block text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">How it works</span>
-          <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Find your rental in 3 simple steps</h2>
+          <span class="inline-block text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">{{ $t('home.howItWorks') }}</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">{{ $t('home.howItWorksTitle') }}</h2>
           <p class="text-sm text-gray-500 mt-2 max-w-md mx-auto">
-            We aggregate listings from trusted sources across multiple countries
+            {{ $t('home.howItWorksDesc') }}
           </p>
         </div>
 
@@ -213,8 +211,8 @@
     <section class="bg-[#FAFAFA]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="text-center mb-10">
-          <h2 class="text-2xl font-bold text-gray-900">Explore by country</h2>
-          <p class="text-sm text-gray-500 mt-2">Discover rental markets in each region</p>
+          <h2 class="text-2xl font-bold text-gray-900">{{ $t('home.exploreByCountry') }}</h2>
+          <p class="text-sm text-gray-500 mt-2">{{ $t('home.discoverMarkets') }}</p>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -228,7 +226,7 @@
             <h3 class="font-bold text-gray-900 group-hover:text-orange-500 transition-colors">{{ r.name }}</h3>
             <p class="text-xs text-gray-500 mt-1">{{ r.currency }}</p>
             <div v-if="regionCountMap[r.code]" class="mt-3 text-sm font-semibold text-orange-500">
-              {{ regionCountMap[r.code]?.toLocaleString() }} listings
+              {{ regionCountMap[r.code]?.toLocaleString() }} {{ $t('home.listings') }}
             </div>
             <div class="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,23 +242,23 @@
     <section class="bg-orange-500">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
         <h2 class="text-2xl sm:text-3xl font-bold text-white">
-          Ready to find your next home?
+          {{ $t('home.readyTitle') }}
         </h2>
         <p class="mt-3 text-orange-100 max-w-md mx-auto text-sm">
-          Join thousands of renters who discovered their ideal property through RentGlobe.
+          {{ $t('home.readyDesc') }}
         </p>
         <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <NuxtLink
             to="/listings"
             class="inline-flex items-center justify-center px-8 py-3 bg-white text-orange-600 text-sm font-semibold rounded-xl hover:bg-orange-50 transition-colors"
           >
-            Browse listings
+            {{ $t('home.browseListings') }}
           </NuxtLink>
           <NuxtLink
             to="/register"
             class="inline-flex items-center justify-center px-8 py-3 border-2 border-white/40 text-white text-sm font-medium rounded-xl hover:bg-white/10 transition-colors"
           >
-            Create account
+            {{ $t('home.createAccount') }}
           </NuxtLink>
         </div>
       </div>
@@ -271,6 +269,7 @@
 <script setup lang="ts">
 import type { Listing } from '~/composables/useListings'
 
+const { t } = useI18n()
 const region = useRegionStore()
 const { fetchListings, fetchRegions } = useListings()
 const router = useRouter()
@@ -310,11 +309,11 @@ const countryCards = [
   { code: 'CA', name: 'Canada', currency: 'CAD — Dollar' },
 ]
 
-const steps = [
-  { icon: 'lucide:search', title: 'Search', desc: 'Filter by city, price, type, and more across 4 countries.' },
-  { icon: 'lucide:home', title: 'Compare', desc: 'View detailed listings with photos, features, and pricing.' },
-  { icon: 'lucide:phone', title: 'Connect', desc: 'Contact landlords or agents directly from the listing page.' },
-]
+const steps = computed(() => [
+  { icon: 'lucide:search', title: t('home.step1Title'), desc: t('home.step1Desc') },
+  { icon: 'lucide:home', title: t('home.step2Title'), desc: t('home.step2Desc') },
+  { icon: 'lucide:phone', title: t('home.step3Title'), desc: t('home.step3Desc') },
+])
 
 function animatedCount(count: number | undefined) {
   return count?.toLocaleString() || '—'

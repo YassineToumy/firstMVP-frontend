@@ -5,14 +5,13 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         <div class="max-w-2xl">
           <span class="inline-block text-xs font-semibold uppercase tracking-widest text-orange-100 mb-3">
-            Guide pratique
+            {{ $t('tips.heroBadge') }}
           </span>
           <h1 class="text-3xl sm:text-4xl font-bold leading-tight">
-            Conseils pour louer en toute sérénité
+            {{ $t('tips.heroTitle') }}
           </h1>
           <p class="mt-4 text-orange-100 text-sm sm:text-base leading-relaxed">
-            Que vous cherchiez votre premier appartement ou que vous soyez un locataire expérimenté,
-            retrouvez ici tout ce qu'il faut savoir avant de signer un bail.
+            {{ $t('tips.heroSubtitle') }}
           </p>
         </div>
       </div>
@@ -22,19 +21,19 @@
     <section class="bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
         <div class="text-center mb-12">
-          <h2 class="text-2xl font-bold text-gray-900">Conseils lors de la location</h2>
+          <h2 class="text-2xl font-bold text-gray-900">{{ $t('tips.tipsTitle') }}</h2>
           <p class="text-gray-500 text-sm mt-2 max-w-md mx-auto">
-            Les bonnes pratiques à adopter avant, pendant et après votre location
+            {{ $t('tips.tipsSubtitle') }}
           </p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div v-for="tip in tips" :key="tip.title" class="bg-[#FAFAFA] border border-gray-100 rounded-2xl p-6 hover:border-orange-200 hover:shadow-sm transition-all duration-300">
+          <div v-for="tip in tips" :key="tip.titleKey" class="bg-[#FAFAFA] border border-gray-100 rounded-2xl p-6 hover:border-orange-200 hover:shadow-sm transition-all duration-300">
             <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center mb-4">
               <Icon :name="tip.icon" class="w-5 h-5 text-orange-500" />
             </div>
-            <h3 class="font-semibold text-gray-900 mb-2">{{ tip.title }}</h3>
-            <p class="text-sm text-gray-500 leading-relaxed">{{ tip.desc }}</p>
+            <h3 class="font-semibold text-gray-900 mb-2">{{ $t(tip.titleKey) }}</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">{{ $t(tip.descKey) }}</p>
           </div>
         </div>
       </div>
@@ -44,16 +43,16 @@
     <section class="bg-[#FAFAFA]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
         <div class="text-center mb-12">
-          <h2 class="text-2xl font-bold text-gray-900">Types de locations</h2>
+          <h2 class="text-2xl font-bold text-gray-900">{{ $t('tips.typesTitle') }}</h2>
           <p class="text-gray-500 text-sm mt-2 max-w-md mx-auto">
-            Chaque type de location a ses propres règles et avantages
+            {{ $t('tips.typesSubtitle') }}
           </p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div
             v-for="type in rentalTypes"
-            :key="type.name"
+            :key="type.nameKey"
             class="bg-white border border-gray-100 rounded-2xl p-6 hover:border-orange-200 hover:shadow-sm transition-all duration-300"
           >
             <div class="flex items-start gap-4">
@@ -62,18 +61,18 @@
               </div>
               <div>
                 <div class="flex items-center gap-2 mb-1">
-                  <h3 class="font-semibold text-gray-900">{{ type.name }}</h3>
+                  <h3 class="font-semibold text-gray-900">{{ $t(type.nameKey) }}</h3>
                   <span class="text-[11px] px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 font-medium border border-orange-100">
-                    {{ type.badge }}
+                    {{ $t(type.badgeKey) }}
                   </span>
                 </div>
-                <p class="text-sm text-gray-500 leading-relaxed">{{ type.desc }}</p>
+                <p class="text-sm text-gray-500 leading-relaxed">{{ $t(type.descKey) }}</p>
                 <ul class="mt-3 space-y-1">
-                  <li v-for="point in type.points" :key="point" class="flex items-start gap-2 text-xs text-gray-500">
+                  <li v-for="pointKey in type.pointKeys" :key="pointKey" class="flex items-start gap-2 text-xs text-gray-500">
                     <svg class="w-3.5 h-3.5 text-orange-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                     </svg>
-                    {{ point }}
+                    {{ $t(pointKey) }}
                   </li>
                 </ul>
               </div>
@@ -87,27 +86,27 @@
     <section class="bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
         <div class="text-center mb-12">
-          <h2 class="text-2xl font-bold text-gray-900">Termes juridiques essentiels</h2>
+          <h2 class="text-2xl font-bold text-gray-900">{{ $t('tips.legalTitle') }}</h2>
           <p class="text-gray-500 text-sm mt-2 max-w-md mx-auto">
-            Maîtrisez le vocabulaire pour mieux comprendre vos droits et obligations
+            {{ $t('tips.legalSubtitle') }}
           </p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div
             v-for="term in legalTerms"
-            :key="term.word"
+            :key="term.wordKey"
             class="border border-gray-100 rounded-2xl p-5 hover:border-orange-200 hover:bg-orange-50/30 transition-all duration-200 group"
           >
             <div class="flex items-start justify-between gap-2 mb-2">
               <h3 class="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">
-                {{ term.word }}
+                {{ $t(term.wordKey) }}
               </h3>
               <span class="text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 font-medium whitespace-nowrap">
-                {{ term.category }}
+                {{ $t(term.categoryKey) }}
               </span>
             </div>
-            <p class="text-sm text-gray-500 leading-relaxed">{{ term.def }}</p>
+            <p class="text-sm text-gray-500 leading-relaxed">{{ $t(term.defKey) }}</p>
           </div>
         </div>
       </div>
@@ -116,15 +115,15 @@
     <!-- CTA -->
     <section class="bg-orange-500">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 text-center">
-        <h2 class="text-2xl font-bold text-white">Prêt à trouver votre prochain logement ?</h2>
+        <h2 class="text-2xl font-bold text-white">{{ $t('tips.ctaTitle') }}</h2>
         <p class="mt-2 text-orange-100 text-sm max-w-sm mx-auto">
-          Parcourez des milliers d'annonces vérifiées dans 4 pays.
+          {{ $t('tips.ctaDesc') }}
         </p>
         <NuxtLink
           to="/listings"
           class="mt-6 inline-flex items-center gap-2 px-8 py-3.5 bg-white text-orange-600 text-sm font-semibold rounded-xl hover:bg-orange-50 transition-colors"
         >
-          Voir les annonces
+          {{ $t('tips.ctaBrowse') }}
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
@@ -136,132 +135,56 @@
 
 <script setup lang="ts">
 const tips = [
-  {
-    icon: 'lucide:search',
-    title: 'Vérifiez le logement avant de signer',
-    desc: "Visitez le bien en personne ou via vidéo, vérifiez l'état des équipements, les compteurs et l'état général des lieux.",
-  },
-  {
-    icon: 'lucide:file-text',
-    title: 'Lisez attentivement le contrat',
-    desc: "Ne signez jamais un bail sans l'avoir lu en entier. Portez attention aux clauses de résiliation, au montant des charges et aux conditions de renouvellement.",
-  },
-  {
-    icon: 'lucide:euro',
-    title: 'Évaluez le budget total',
-    desc: "Le loyer ne constitue pas la seule dépense. Prenez en compte les charges, la taxe d'habitation, les assurances et les éventuels frais d'agence.",
-  },
-  {
-    icon: 'lucide:camera',
-    title: "Faites un état des lieux détaillé",
-    desc: "À l'entrée comme à la sortie, photographiez chaque pièce et notez toute imperfection pour éviter les litiges sur le dépôt de garantie.",
-  },
-  {
-    icon: 'lucide:landmark',
-    title: 'Connaissez vos droits',
-    desc: "La législation varie selon les pays. Renseignez-vous sur les délais de préavis, les règles d'augmentation du loyer et vos recours en cas de litige.",
-  },
-  {
-    icon: 'lucide:handshake',
-    title: 'Communiquez avec le propriétaire',
-    desc: "Entretenez une relation de confiance avec votre bailleur. Signalez rapidement toute panne ou dommage pour éviter des complications ultérieures.",
-  },
+  { icon: 'lucide:search', titleKey: 'tips.tip1Title', descKey: 'tips.tip1Desc' },
+  { icon: 'lucide:file-text', titleKey: 'tips.tip2Title', descKey: 'tips.tip2Desc' },
+  { icon: 'lucide:euro', titleKey: 'tips.tip3Title', descKey: 'tips.tip3Desc' },
+  { icon: 'lucide:camera', titleKey: 'tips.tip4Title', descKey: 'tips.tip4Desc' },
+  { icon: 'lucide:landmark', titleKey: 'tips.tip5Title', descKey: 'tips.tip5Desc' },
+  { icon: 'lucide:handshake', titleKey: 'tips.tip6Title', descKey: 'tips.tip6Desc' },
 ]
 
 const rentalTypes = [
   {
     icon: 'lucide:sofa',
-    name: 'Location meublée',
-    badge: 'Flexible',
-    desc: "Le logement est fourni avec tous les meubles et équipements nécessaires à la vie quotidienne.",
-    points: [
-      'Idéale pour les séjours courts ou temporaires',
-      'Loyer généralement plus élevé que le non meublé',
-      'Bail plus souple (1 an renouvelable, 9 mois pour étudiants)',
-    ],
+    nameKey: 'tips.type1Name',
+    badgeKey: 'tips.type1Badge',
+    descKey: 'tips.type1Desc',
+    pointKeys: ['tips.type1Point1', 'tips.type1Point2', 'tips.type1Point3'],
   },
   {
     icon: 'lucide:home',
-    name: 'Location non meublée (vide)',
-    badge: 'Long terme',
-    desc: "Le logement est livré sans mobilier. Le locataire apporte ses propres meubles et équipements.",
-    points: [
-      'Bail de 3 ans renouvelable (en France)',
-      'Loyer plus bas, meilleure stabilité',
-      'Convient aux installations durables',
-    ],
+    nameKey: 'tips.type2Name',
+    badgeKey: 'tips.type2Badge',
+    descKey: 'tips.type2Desc',
+    pointKeys: ['tips.type2Point1', 'tips.type2Point2', 'tips.type2Point3'],
   },
   {
     icon: 'lucide:calendar',
-    name: 'Location saisonnière',
-    badge: 'Court séjour',
-    desc: "Location temporaire pour des vacances ou des déplacements professionnels, sur une durée limitée.",
-    points: [
-      'Durée inférieure à 90 jours en général',
-      'Réglementée dans certaines villes (Paris, etc.)',
-      'Tarif à la nuitée ou à la semaine',
-    ],
+    nameKey: 'tips.type3Name',
+    badgeKey: 'tips.type3Badge',
+    descKey: 'tips.type3Desc',
+    pointKeys: ['tips.type3Point1', 'tips.type3Point2', 'tips.type3Point3'],
   },
   {
     icon: 'lucide:building-2',
-    name: 'Location professionnelle / commerciale',
-    badge: 'Business',
-    desc: "Bail destiné à un usage professionnel ou commercial, distinct du bail résidentiel.",
-    points: [
-      'Bail commercial de 9 ans minimum',
-      'Encadrement juridique spécifique',
-      "Soumis à la TVA selon l'activité",
-    ],
+    nameKey: 'tips.type4Name',
+    badgeKey: 'tips.type4Badge',
+    descKey: 'tips.type4Desc',
+    pointKeys: ['tips.type4Point1', 'tips.type4Point2', 'tips.type4Point3'],
   },
 ]
 
 const legalTerms = [
-  {
-    word: 'Bail (contrat de location)',
-    category: 'Contrat',
-    def: "Contrat écrit entre le propriétaire (bailleur) et le locataire définissant les conditions de location : durée, loyer, charges, obligations de chaque partie.",
-  },
-  {
-    word: 'Dépôt de garantie (caution)',
-    category: 'Finances',
-    def: "Somme versée par le locataire à l'entrée dans les lieux, remboursée à la sortie après déduction des éventuelles retenues pour dégradations.",
-  },
-  {
-    word: 'Préavis',
-    category: 'Résiliation',
-    def: "Délai obligatoire à respecter avant de quitter un logement ou de demander un départ. Varie de 1 à 3 mois selon le pays et le type de bail.",
-  },
-  {
-    word: 'Charges locatives',
-    category: 'Finances',
-    def: "Dépenses liées à l'usage de l'immeuble (entretien des parties communes, eau, chauffage collectif…) récupérables par le propriétaire auprès du locataire.",
-  },
-  {
-    word: 'État des lieux',
-    category: 'Procédure',
-    def: "Document réalisé à l'entrée et à la sortie du logement, décrivant l'état de chaque pièce. Il protège le locataire et le propriétaire en cas de litige.",
-  },
-  {
-    word: 'Indice de référence des loyers (IRL)',
-    category: 'Loyer',
-    def: "Indice publié trimestriellement permettant de réviser légalement le montant du loyer en cours de bail.",
-  },
-  {
-    word: 'Quittance de loyer',
-    category: 'Document',
-    def: "Reçu délivré par le propriétaire attestant du paiement du loyer. Elle peut être exigée par certains organismes (banques, administrations).",
-  },
-  {
-    word: 'Garant (caution solidaire)',
-    category: 'Sûreté',
-    def: "Personne physique ou morale qui s'engage à payer le loyer à la place du locataire en cas de défaillance. Souvent requis pour les jeunes locataires.",
-  },
-  {
-    word: 'Clause résolutoire',
-    category: 'Contrat',
-    def: "Clause du bail prévoyant sa résiliation automatique en cas de manquement grave du locataire (loyers impayés, troubles de voisinage).",
-  },
+  { wordKey: 'tips.legal1Word', categoryKey: 'tips.legal1Category', defKey: 'tips.legal1Def' },
+  { wordKey: 'tips.legal2Word', categoryKey: 'tips.legal2Category', defKey: 'tips.legal2Def' },
+  { wordKey: 'tips.legal3Word', categoryKey: 'tips.legal3Category', defKey: 'tips.legal3Def' },
+  { wordKey: 'tips.legal4Word', categoryKey: 'tips.legal4Category', defKey: 'tips.legal4Def' },
+  { wordKey: 'tips.legal5Word', categoryKey: 'tips.legal5Category', defKey: 'tips.legal5Def' },
+  { wordKey: 'tips.legal6Word', categoryKey: 'tips.legal6Category', defKey: 'tips.legal6Def' },
+  { wordKey: 'tips.legal7Word', categoryKey: 'tips.legal7Category', defKey: 'tips.legal7Def' },
+  { wordKey: 'tips.legal8Word', categoryKey: 'tips.legal8Category', defKey: 'tips.legal8Def' },
+  { wordKey: 'tips.legal9Word', categoryKey: 'tips.legal9Category', defKey: 'tips.legal9Def' },
 ]
 
-useHead({ title: 'Conseils location — RentGlobe' })
+useHead({ title: 'Rental Tips — RentGlobe' })
 </script>
