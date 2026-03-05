@@ -14,10 +14,12 @@ const region = useRegionStore()
 const { fetchUser } = useAuth()
 const { locale } = useI18n()
 
-// Apply RTL direction when Arabic is selected
+// Apply RTL direction when Arabic is selected (client-only)
 watch(locale, (newLocale) => {
-  document.documentElement.dir = newLocale === 'ar' ? 'rtl' : 'ltr'
-  document.documentElement.lang = newLocale
+  if (import.meta.client) {
+    document.documentElement.dir = newLocale === 'ar' ? 'rtl' : 'ltr'
+    document.documentElement.lang = newLocale
+  }
 }, { immediate: true })
 
 onMounted(() => {
