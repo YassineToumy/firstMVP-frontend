@@ -67,24 +67,6 @@
             </button>
           </div>
         </div>
-
-        <!-- Region selector cards -->
-        <div class="mt-5 flex flex-wrap gap-3 animate-fade-in-up animation-delay-400">
-          <p class="w-full text-xs text-gray-500 mb-1">{{ $t('home.searchIn') }}</p>
-          <button
-            v-for="r in quickRegions"
-            :key="r.code"
-            @click="selectRegion(r.code)"
-            class="flex items-center gap-2 px-4 py-2.5 rounded-xl backdrop-blur border-2 text-sm font-medium transition-all duration-200"
-            :class="localSelectedCode === r.code
-              ? 'border-orange-400 bg-orange-500/20 text-white'
-              : 'border-white/15 bg-white/10 text-gray-300 hover:border-white/35 hover:bg-white/15 hover:text-white'"
-          >
-            <img :src="`https://flagcdn.com/20x15/${r.code.toLowerCase()}.png`" :alt="r.name" class="w-5 rounded-sm" />
-            <span>{{ r.name }}</span>
-            <span v-if="regionCountMap[r.code]" class="text-[11px] opacity-60">({{ regionCountMap[r.code]?.toLocaleString() }})</span>
-          </button>
-        </div>
       </div>
     </section>
 
